@@ -1,0 +1,47 @@
+# Gradle
+.gradle/
+build/
+
+# Local configuration
+local.properties
+
+# Log files
+*.log
+
+# Android Studio / IntelliJ
+*.iml
+.idea/
+.cxx/
+.externalNativeBuild/
+captures/
+output-metadata.json
+
+# APK / AAB
+*.apk
+*.ap_
+*.aab
+
+# Keystore (никогда не коммитить)
+*.jks
+*.keystore
+
+# Google services (если не хочешь светить ключи)
+google-services.json
+
+# Profiling
+*.hprof
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Kotlin/Java
+*.class
+
+# Gradle wrapper logs
+.gradle/
+.gradle/**
+
+# Misc
+*.swp
+*.tmp

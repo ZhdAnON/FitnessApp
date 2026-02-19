@@ -1,0 +1,77 @@
+package com.zhdanon.fitnessapp.presentation.navigation
+
+import com.zhdanon.fitnessapp.presentation.workouts.editor.AddWorkoutRoute
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.zhdanon.fitnessapp.presentation.admin.AdminCalenderScreen
+import com.zhdanon.fitnessapp.presentation.admin.addexercise.AddExerciseRoute
+import com.zhdanon.fitnessapp.presentation.workouts.editor.EditWorkoutRoute
+import com.zhdanon.fitnessapp.presentation.workouts.editor.EditWorkoutViewModel
+import com.zhdanon.fitnessapp.presentation.workouts.exercises.ExerciseListScreen
+import com.zhdanon.fitnessapp.presentation.workouts.workoutDetail.WorkoutDetailRoute
+import org.koin.compose.viewmodel.koinViewModel
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun AdminInnerNavHost(navController: NavHostController) {
+    NavHost(
+        navController = navController,
+        startDestination = "workouts"
+    ) {
+        composable("workouts") {
+            AdminCalenderScreen(
+                onWorkoutClick = { id -> navController.navigate("workout/$id") }
+            )
+        }
+
+        composable("addWorkout") {
+            AddWorkoutRoute(
+                isEditMode = false,
+                onSaved = { navController.popBackStack() }
+            )
+        }
+
+        composable("addExercise") {
+            AddExerciseRoute(navController)
+        }
+
+        composable("exercises") {
+            ExerciseListScreen(
+                onAddExercise = { navController.navigate("addExercise") }
+            )
+        }
+
+        composable("users") {
+//            UsersListRoute()
+        }
+
+        composable("workout/{id}") { backStack ->
+            val id = backStack.arguments!!.getString("id")!!
+            val isAdmin = true
+            WorkoutDetailRoute(
+                workoutId = id,
+                isAdmin = isAdmin,
+                onEdit = { navController.navigate("editWorkout/$id") }
+            )
+        }
+
+        composable("editWorkout/{id}") { backStack ->
+            val id = backStack.arguments!!.getString("id")!!
+
+            val viewModel: EditWorkoutViewModel = koinViewModel(
+                key = "edit_$id",
+                viewModelStoreOwner = backStack
+            )
+
+            EditWorkoutRoute(
+                workoutId = id,
+                viewModel = viewModel,
+                onSaved = { navController.navigate("workouts") }
+            )
+        }
+    }
+}
