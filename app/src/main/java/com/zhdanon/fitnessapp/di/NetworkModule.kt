@@ -9,7 +9,6 @@ import com.zhdanon.fitnessapp.data.repository.AuthRepositoryImpl
 import com.zhdanon.fitnessapp.data.api.WorkoutApiImpl
 import com.zhdanon.fitnessapp.data.api.UserApiImpl
 import com.zhdanon.fitnessapp.data.datastore.TokenStorageImpl
-import com.zhdanon.fitnessapp.data.network.AuthInterceptor
 import com.zhdanon.fitnessapp.data.repository.ExerciseRepositoryImpl
 import com.zhdanon.fitnessapp.data.repository.WorkoutRepositoryImpl
 import com.zhdanon.fitnessapp.data.repository.UserRepositoryImpl
@@ -21,8 +20,13 @@ import com.zhdanon.fitnessapp.domain.repositories.UserRepository
 import com.zhdanon.fitnessapp.domain.api.ApiConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
+import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.header
+import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.runBlocking
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -32,25 +36,31 @@ val networkModule = module {
 
     single<TokenStorage> { TokenStorageImpl(get()) }
 
-    // Client without Interceptor — for refresh
+    // Клиент для refresh — без токена
     single(named("refreshClient")) {
         HttpClient(Android) {
             install(ContentNegotiation) { json() }
         }
     }
 
-    // Interceptor
-    single {
-        AuthInterceptor(
-            tokenStorage = get(),
-            refreshClient = get(named("refreshClient"))
-        )
-    }
-
-    // Main client — with Interceptor
+    // Главный клиент — ВСЕГДА добавляет Authorization
     single(named("mainClient")) {
+        val tokenStorage: TokenStorage = get()
+
         HttpClient(Android) {
+
             install(ContentNegotiation) { json() }
+
+            install(DefaultRequest) {
+                // ВАЖНО: suspend-функции здесь нельзя, поэтому используем runBlocking
+                val token = runBlocking {
+                    tokenStorage.tokenFlow.firstOrNull()?.accessToken
+                }
+
+                if (token != null) {
+                    header(HttpHeaders.Authorization, "Bearer $token")
+                }
+            }
         }
     }
 
@@ -58,13 +68,14 @@ val networkModule = module {
     single<AuthApi> {
         AuthApiImpl(
             client = get(named("mainClient")),
-            tokenStorage = get(),
             apiConfig = get()
         )
     }
+
     single<UserApi> {
         UserApiImpl(get(named("mainClient")))
     }
+
     single<WorkoutApi> {
         WorkoutApiImpl(
             client = get(named("mainClient")),
@@ -72,6 +83,7 @@ val networkModule = module {
             apiConfig = get()
         )
     }
+
     single<ExerciseApi> {
         ExerciseApiImpl(
             client = get(named("mainClient")),
@@ -79,15 +91,14 @@ val networkModule = module {
         )
     }
 
-
     // Repositories
     single<AuthRepository> {
         AuthRepositoryImpl(
-            get(),
-            get(),
-            get(named("refreshClient"))
+            authApi = get(),
+            tokenStorage = get()
         )
     }
+
     single<UserRepository> { UserRepositoryImpl(get()) }
     single<WorkoutRepository> { WorkoutRepositoryImpl(get()) }
     single<ExerciseRepositoryImpl> { ExerciseRepositoryImpl(get()) }

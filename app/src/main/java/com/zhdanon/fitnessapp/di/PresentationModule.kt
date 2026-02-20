@@ -19,12 +19,17 @@ val presentationModule = module {
             loginUseCase = get()
         )
     }
-    viewModel { AuthViewModel(get()) }
+    viewModel {
+        AuthViewModel(
+            logoutUseCase = get(),
+            autoLoginUseCase = get()
+        )
+    }
     viewModel {
         AuthStateViewModel(
             getSavedTokenUseCase = get(),
-            getCurrentUserUseCase = get(),
-            fetchProfileUseCase = get()
+            fetchProfileUseCase = get(),
+            autoLoginUseCase = get()
         )
     }
     viewModel {

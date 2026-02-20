@@ -3,6 +3,7 @@ package com.zhdanon.fitnessapp.di
 import com.zhdanon.fitnessapp.domain.usecases.exercises.AddExerciseUseCase
 import com.zhdanon.fitnessapp.domain.usecases.workouts.AddWorkoutUseCase
 import com.zhdanon.fitnessapp.domain.usecases.auth.AddUserUseCase
+import com.zhdanon.fitnessapp.domain.usecases.auth.AutoLoginUseCase
 import com.zhdanon.fitnessapp.domain.usecases.workouts.DeleteWorkoutUseCase
 import com.zhdanon.fitnessapp.domain.usecases.auth.DeleteUserUseCase
 import com.zhdanon.fitnessapp.domain.usecases.auth.FetchProfileUseCase
@@ -23,6 +24,7 @@ import org.koin.dsl.module
 
 val domainModule = module {
     factory { AddExerciseUseCase(get()) }
+    factory { AutoLoginUseCase(get()) }
     factory { GetExerciseUseCase(get()) }
     factory { AddWorkoutUseCase(get()) }
     factory { AddUserUseCase(get()) }

@@ -25,20 +25,30 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun FitnessApp() {
-    val navController = rememberNavController()
-    val authViewModel: AuthViewModel = koinViewModel()
-
-    val authStateViewModel: AuthStateViewModel = koinViewModel()
+fun FitnessApp(authStateViewModel: AuthStateViewModel) {
     val startDestination = authStateViewModel.startDestination
-
     if (startDestination == null) {
-        // Show loader
-        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator()
-        }
+        LoadingScreen()
         return
     }
+    FitnessNavHost(startDestination = startDestination)
+}
+
+@Composable
+fun LoadingScreen() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun FitnessNavHost(startDestination: String) {
+    val navController = rememberNavController()
+    val authViewModel: AuthViewModel = koinViewModel()
 
     // Logout listener
     LaunchedEffect(Unit) {
@@ -53,6 +63,7 @@ fun FitnessApp() {
         navController = navController,
         startDestination = startDestination
     ) {
+        // ---------------- LOGIN ----------------
         composable("login") {
             LoginScreen(
                 onLoginSuccess = { user ->
@@ -68,7 +79,7 @@ fun FitnessApp() {
             )
         }
 
-        // Пользовательская часть
+        // ---------------- USER ROOT ----------------
         composable("user") {
             UserRootScreen(
                 authViewModel = authViewModel,
@@ -78,24 +89,24 @@ fun FitnessApp() {
             )
         }
 
-        // Детальная тренировка (общая)
+        // ---------------- WORKOUT DETAIL ----------------
         composable(
             route = "workout/{id}",
             arguments = listOf(navArgument("id") { type = NavType.StringType })
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id")!!
-            val authStateViewModel: AuthStateViewModel = koinViewModel()
-            val userRole = authStateViewModel.startDestination
+            val isAdmin = startDestination == "admin"
+
             WorkoutDetailRoute(
                 workoutId = id,
                 onEdit = { id ->
                     navController.navigate("editWorkout/$id")
                 },
-                isAdmin = userRole == "admin"
+                isAdmin = isAdmin
             )
         }
 
-        // Админская часть
+        // ---------------- ADMIN ROOT ----------------
         composable("admin") {
             AdminRootScreen(
                 authViewModel = authViewModel

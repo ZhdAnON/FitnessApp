@@ -11,4 +11,5 @@ interface AuthRepository {
     fun getCurrentUser(): User?
     suspend fun getCurrentToken(): AuthToken?
     suspend fun fetchProfile(): User
+    suspend fun refreshToken(): Boolean
 }

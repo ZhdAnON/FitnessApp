@@ -6,49 +6,44 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zhdanon.fitnessapp.domain.models.auth.UserRole
+import com.zhdanon.fitnessapp.domain.usecases.auth.AutoLoginUseCase
 import com.zhdanon.fitnessapp.domain.usecases.auth.FetchProfileUseCase
-import com.zhdanon.fitnessapp.domain.usecases.auth.GetCurrentUserUseCase
 import com.zhdanon.fitnessapp.domain.usecases.auth.GetSavedTokenUseCase
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class AuthStateViewModel(
     private val getSavedTokenUseCase: GetSavedTokenUseCase,
-    private val getCurrentUserUseCase: GetCurrentUserUseCase,
+    private val autoLoginUseCase: AutoLoginUseCase,
     private val fetchProfileUseCase: FetchProfileUseCase
 ) : ViewModel() {
 
     var startDestination by mutableStateOf<String?>(null)
         private set
 
-    var sessionExpired by mutableStateOf(false)
-        private set
-
     init {
         viewModelScope.launch {
-            getSavedTokenUseCase().collect { token ->
+            val savedToken = getSavedTokenUseCase().first()
 
-                if (token == null) {
-                    // токен исчез → либо logout, либо refresh истёк
-                    sessionExpired = true
-                    startDestination = "login"
-                    return@collect
-                }
+            if (savedToken == null) {
+                startDestination = "login"
+                return@launch
+            }
 
-                // токен есть → проверяем пользователя
-                val user = getCurrentUserUseCase() ?: runCatching {
-                    fetchProfileUseCase()
-                }.getOrNull()
+            val refreshed = autoLoginUseCase()
 
-                if (user == null) {
-                    // если профиль не загрузился → считаем, что сессия истекла
-                    sessionExpired = true
-                    startDestination = "login"
-                } else {
-                    sessionExpired = false
-                    startDestination = when (user.role) {
-                        UserRole.ADMIN -> "admin"
-                        UserRole.USER -> "user"
-                    }
+            if (!refreshed) {
+                startDestination = "login"
+                return@launch
+            }
+
+            val user = runCatching { fetchProfileUseCase() }.getOrNull()
+
+            startDestination = when (user?.role) {
+                UserRole.ADMIN -> "admin"
+                UserRole.USER -> "user"
+                else -> {
+                    "login"
                 }
             }
         }

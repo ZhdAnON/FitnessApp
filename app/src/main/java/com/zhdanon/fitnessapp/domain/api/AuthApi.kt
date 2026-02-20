@@ -11,4 +11,5 @@ interface AuthApi {
     suspend fun login(request: LoginRequestDto): AuthResponseDto
     suspend fun changeOwnPassword(request: ChangePasswordRequestDto)
     suspend fun getProfile(): UserDto
+    suspend fun refresh(refreshToken: String): AuthResponseDto
 }

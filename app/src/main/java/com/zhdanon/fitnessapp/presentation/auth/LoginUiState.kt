@@ -1,3 +1,5 @@
+package com.zhdanon.fitnessapp.presentation.auth
+
 data class LoginUiState(
     val email: String = "",
     val password: String = "",
