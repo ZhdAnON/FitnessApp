@@ -54,11 +54,17 @@ val presentationModule = module {
             getExercisesUseCase = get()
         )
     }
-    viewModel { AddWorkoutViewModel(addWorkoutUseCase = get()) }
+    viewModel {
+        AddWorkoutViewModel(
+            addWorkoutUseCase = get(),
+            getExercisesUseCase = get()
+        )
+    }
     viewModel {
         EditWorkoutViewModel(
             getWorkoutUseCase = get(),
-            updateWorkoutUseCase = get()
+            updateWorkoutUseCase = get(),
+            getExercisesUseCase = get()
         )
     }
     viewModel { ExerciseListViewModel(getExerciseUseCase = get()) }

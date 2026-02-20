@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.zhdanon.fitnessapp.presentation.workouts.editor.components.WorkoutSetEditor
 import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.WorkoutUiState
-import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.WorkoutExerciseDraft
 import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.WorkoutSetDraft
 
 import java.time.Instant
@@ -111,6 +110,7 @@ fun AddWorkoutScreen(
         state.sets.forEachIndexed { index, set ->
             WorkoutSetEditor(
                 set = set,
+                exercises = state.exercises,
                 onChange = { onUpdateSet(index, it) },
                 onDeleteSet = { onDeleteSet(index) },
                 onDeleteExercise = { exerciseIndex ->
@@ -119,13 +119,7 @@ fun AddWorkoutScreen(
                 onMoveUp = { onMoveSetUp(index) },
                 onMoveDown = { onMoveSetDown(index) },
                 onMoveExUp = { exerciseIndex -> onMoveExUp(index, exerciseIndex) },
-                onMoveExDown = { exerciseIndex -> onMoveExDown(index, exerciseIndex) },
-                onAddExercise = {
-                    val updated = set.copy(
-                        exercises = set.exercises + WorkoutExerciseDraft(exerciseId = "")
-                    )
-                    onUpdateSet(index, updated)
-                }
+                onMoveExDown = { exerciseIndex -> onMoveExDown(index, exerciseIndex) }
             )
             Spacer(Modifier.height(12.dp))
         }

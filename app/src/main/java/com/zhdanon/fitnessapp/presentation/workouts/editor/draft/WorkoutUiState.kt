@@ -7,6 +7,7 @@ data class WorkoutUiState(
     val date: LocalDate = LocalDate.now(),
     val title: String = "",
     val sets: List<WorkoutSetDraft> = emptyList(),
+    val exercises: List<ExerciseUi> = emptyList(),
     val isSaving: Boolean = false,
     val savedWorkoutId: String? = null,
     val error: String? = null,

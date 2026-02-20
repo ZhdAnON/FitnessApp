@@ -1,5 +1,7 @@
 package com.zhdanon.fitnessapp.presentation.workouts.editor
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
@@ -9,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.zhdanon.fitnessapp.domain.models.workouts.Workout
 
@@ -40,8 +43,14 @@ fun EditWorkoutRoute(
 
     val state = viewModel.uiState
 
-    if (workout.value == null) {
-        CircularProgressIndicator()
+    // ⬇⬇⬇ ВАЖНО: ждём загрузки упражнений
+    if (workout.value == null || state.exercises.isEmpty()) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
         return
     }
 

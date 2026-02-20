@@ -6,8 +6,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zhdanon.fitnessapp.domain.models.workouts.Workout
+import com.zhdanon.fitnessapp.domain.usecases.workouts.GetExercisesUseCase
 import com.zhdanon.fitnessapp.domain.usecases.workouts.GetWorkoutUseCase
 import com.zhdanon.fitnessapp.domain.usecases.workouts.UpdateWorkoutUseCase
+import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.ExerciseUi
 import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.WorkoutSetDraft
 import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.WorkoutUiState
 import com.zhdanon.fitnessapp.presentation.workouts.editor.mapper.toDraftState
@@ -19,11 +21,30 @@ import java.time.LocalDate
 
 class EditWorkoutViewModel(
     private val getWorkoutUseCase: GetWorkoutUseCase,
-    private val updateWorkoutUseCase: UpdateWorkoutUseCase
+    private val updateWorkoutUseCase: UpdateWorkoutUseCase,
+    private val getExercisesUseCase: GetExercisesUseCase
 ) : ViewModel() {
 
     var uiState by mutableStateOf(WorkoutUiState())
         private set
+
+    init {
+        loadExercises()
+    }
+
+    private fun loadExercises() {
+        viewModelScope.launch {
+            val list = getExercisesUseCase()
+            uiState = uiState.copy(
+                exercises = list.map {
+                    ExerciseUi(
+                        id = it.id,
+                        name = it.name
+                    )
+                }
+            )
+        }
+    }
 
     // -----------------------------
     // LOAD WORKOUT FOR EDIT
@@ -33,7 +54,10 @@ class EditWorkoutViewModel(
     }
 
     fun loadWorkoutForEdit(workout: Workout) {
-        uiState = workout.toDraftState()
+        val currentExercises = uiState.exercises
+        uiState = workout.toDraftState().copy(
+            exercises = currentExercises
+        )
     }
 
     // -----------------------------

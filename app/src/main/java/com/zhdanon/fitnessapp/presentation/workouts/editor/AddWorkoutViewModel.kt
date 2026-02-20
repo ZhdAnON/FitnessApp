@@ -6,6 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zhdanon.fitnessapp.domain.usecases.workouts.AddWorkoutUseCase
+import com.zhdanon.fitnessapp.domain.usecases.workouts.GetExercisesUseCase
+import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.ExerciseUi
 import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.WorkoutUiState
 import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.WorkoutSetDraft
 import com.zhdanon.fitnessapp.presentation.workouts.editor.mapper.toRequest
@@ -15,11 +17,31 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class AddWorkoutViewModel(
-    private val addWorkoutUseCase: AddWorkoutUseCase
+    private val addWorkoutUseCase: AddWorkoutUseCase,
+    private val getExercisesUseCase: GetExercisesUseCase
 ) : ViewModel() {
 
     var uiState by mutableStateOf(WorkoutUiState())
         private set
+
+    init {
+        loadExercises()
+    }
+
+    private fun loadExercises() {
+        viewModelScope.launch {
+            val list = getExercisesUseCase()
+            uiState = uiState.copy(
+                exercises =
+                    list.map {
+                        ExerciseUi(
+                            id = it.id,
+                            name = it.name
+                        )
+                    }
+            )
+        }
+    }
 
     // -----------------------------
     // SIMPLE FIELD UPDATES

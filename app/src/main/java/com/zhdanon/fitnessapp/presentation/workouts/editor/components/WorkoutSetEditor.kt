@@ -19,14 +19,20 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.ExerciseUi
 import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.WorkoutSetDraft
 
 @Composable
 fun WorkoutSetEditor(
     set: WorkoutSetDraft,
+    exercises: List<ExerciseUi>,
     onChange: (WorkoutSetDraft) -> Unit,
     onDeleteSet: () -> Unit,
     onMoveUp: () -> Unit,
@@ -34,8 +40,10 @@ fun WorkoutSetEditor(
     onMoveExUp: (exerciseIndex: Int) -> Unit,
     onMoveExDown: (exerciseIndex: Int) -> Unit,
     onDeleteExercise: (Int) -> Unit,
-    onAddExercise: () -> Unit
 ) {
+    var showExerciseDialog by remember { mutableStateOf(false) }
+    var editingExerciseIndex by remember { mutableStateOf<Int?>(null) }
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
@@ -73,24 +81,53 @@ fun WorkoutSetEditor(
 
             Spacer(Modifier.height(8.dp))
 
+            val getExerciseName: (String) -> String = { id ->
+                exercises.firstOrNull { it.id == id }?.name ?: "Неизвестное упражнение"
+            }
+
             set.exercises.forEachIndexed { index, exercise ->
-                WorkoutExerciseEditor(
+                WorkoutExerciseItem(
                     exercise = exercise,
-                    onChange = { updatedExercise ->
-                        val updated = set.exercises.toMutableList()
-                        updated[index] = updatedExercise
-                        onChange(set.copy(exercises = updated))
+                    exerciseName = getExerciseName(exercise.exerciseId),
+                    onEdit = {
+                        editingExerciseIndex = index
+                        showExerciseDialog = true
                     },
                     onMoveUp = { onMoveExUp(index) },
                     onMoveDown = { onMoveExDown(index) },
                     onDelete = { onDeleteExercise(index) }
                 )
 
+
                 Spacer(Modifier.height(12.dp))
             }
 
-            Button(onClick = onAddExercise) {
+            Button(onClick = {
+                editingExerciseIndex = null
+                showExerciseDialog = true
+            }) {
                 Text("Добавить упражнение")
+            }
+
+            if (showExerciseDialog) {
+                val initial = editingExerciseIndex?.let { set.exercises[it] }
+
+                ExerciseDialog(
+                    initial = initial,
+                    onDismiss = { showExerciseDialog = false },
+                    onConfirm = { newExercise ->
+                        val updated = set.exercises.toMutableList()
+
+                        if (editingExerciseIndex == null) {
+                            updated.add(newExercise)
+                        } else {
+                            updated[editingExerciseIndex!!] = newExercise
+                        }
+
+                        onChange(set.copy(exercises = updated))
+                        showExerciseDialog = false
+                    }
+                )
             }
         }
     }
