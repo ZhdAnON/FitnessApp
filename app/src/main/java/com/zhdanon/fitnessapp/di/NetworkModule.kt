@@ -27,6 +27,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -39,7 +40,14 @@ val networkModule = module {
     // Клиент для refresh — без токена
     single(named("refreshClient")) {
         HttpClient(Android) {
-            install(ContentNegotiation) { json() }
+            install(ContentNegotiation) {
+                json(
+                    Json {
+                        ignoreUnknownKeys = true
+                        encodeDefaults = true
+                    }
+                )
+            }
         }
     }
 
@@ -49,7 +57,14 @@ val networkModule = module {
 
         HttpClient(Android) {
 
-            install(ContentNegotiation) { json() }
+            install(ContentNegotiation) {
+                json(
+                    Json {
+                        ignoreUnknownKeys = true
+                        encodeDefaults = true
+                    }
+                )
+            }
 
             install(DefaultRequest) {
                 // ВАЖНО: suspend-функции здесь нельзя, поэтому используем runBlocking
@@ -73,7 +88,10 @@ val networkModule = module {
     }
 
     single<UserApi> {
-        UserApiImpl(get(named("mainClient")))
+        UserApiImpl(
+            client = get(named("mainClient")),
+            apiConfig = get()
+        )
     }
 
     single<WorkoutApi> {

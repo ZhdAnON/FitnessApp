@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.zhdanon.fitnessapp.presentation.admin.AdminCalenderScreen
+import com.zhdanon.fitnessapp.presentation.admin.userslist.AdminUsersScreen
 import com.zhdanon.fitnessapp.presentation.admin.addexercise.AddExerciseRoute
 import com.zhdanon.fitnessapp.presentation.workouts.editor.EditWorkoutRoute
 import com.zhdanon.fitnessapp.presentation.workouts.editor.EditWorkoutViewModel
@@ -24,14 +25,20 @@ fun AdminInnerNavHost(navController: NavHostController) {
     ) {
         composable("workouts") {
             AdminCalenderScreen(
+                navController = navController,
                 onWorkoutClick = { id -> navController.navigate("workout/$id") }
             )
         }
 
-        composable("addWorkout") {
+        composable("addWorkout") { backStackEntry ->
             AddWorkoutRoute(
                 isEditMode = false,
-                onSaved = { navController.popBackStack() }
+                onSaved = {
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set("workout_saved", true)
+                    navController.popBackStack()
+                }
             )
         }
 
@@ -46,7 +53,7 @@ fun AdminInnerNavHost(navController: NavHostController) {
         }
 
         composable("users") {
-//            UsersListRoute()
+            AdminUsersScreen()
         }
 
         composable("workout/{id}") { backStack ->

@@ -7,5 +7,6 @@ import com.zhdanon.fitnessapp.domain.models.auth.UserRole
 fun UserDto.toDomain() = User(
     id = id,
     email = email,
-    role = UserRole.valueOf(role.uppercase())
+    role = UserRole.valueOf(role.uppercase()),
+    createdAt = createdAt
 )

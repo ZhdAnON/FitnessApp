@@ -1,7 +1,7 @@
 package com.zhdanon.fitnessapp.di
 
 import com.zhdanon.fitnessapp.presentation.workouts.editor.AddWorkoutViewModel
-import com.zhdanon.fitnessapp.presentation.admin.AdminUsersViewModel
+import com.zhdanon.fitnessapp.presentation.admin.userslist.AdminUsersViewModel
 import com.zhdanon.fitnessapp.presentation.admin.addexercise.AddExerciseViewModel
 import com.zhdanon.fitnessapp.presentation.auth.AuthStateViewModel
 import com.zhdanon.fitnessapp.presentation.auth.AuthViewModel
@@ -38,7 +38,8 @@ val presentationModule = module {
             addUserUseCase = get(),
             updateUserRoleUseCase = get(),
             updateUserPasswordUseCase = get(),
-            deleteUserUseCase = get()
+            deleteUserUseCase = get(),
+            getSavedTokenUseCase = get()
         )
     }
     viewModel {

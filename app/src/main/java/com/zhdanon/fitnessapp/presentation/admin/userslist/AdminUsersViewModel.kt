@@ -1,17 +1,19 @@
-package com.zhdanon.fitnessapp.presentation.admin
+package com.zhdanon.fitnessapp.presentation.admin.userslist
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zhdanon.fitnessapp.domain.models.auth.User
 import com.zhdanon.fitnessapp.domain.models.auth.UserRole
 import com.zhdanon.fitnessapp.domain.usecases.auth.AddUserUseCase
 import com.zhdanon.fitnessapp.domain.usecases.auth.DeleteUserUseCase
 import com.zhdanon.fitnessapp.domain.usecases.auth.GetAllUsersUseCase
+import com.zhdanon.fitnessapp.domain.usecases.auth.GetSavedTokenUseCase
 import com.zhdanon.fitnessapp.domain.usecases.auth.UpdateUserPasswordUseCase
 import com.zhdanon.fitnessapp.domain.usecases.auth.UpdateUserRoleUseCase
+import com.zhdanon.fitnessapp.domain.util.extractUserIdFromJwt
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class AdminUsersViewModel(
@@ -19,14 +21,22 @@ class AdminUsersViewModel(
     private val addUserUseCase: AddUserUseCase,
     private val updateUserRoleUseCase: UpdateUserRoleUseCase,
     private val updateUserPasswordUseCase: UpdateUserPasswordUseCase,
-    private val deleteUserUseCase: DeleteUserUseCase
+    private val deleteUserUseCase: DeleteUserUseCase,
+    private val getSavedTokenUseCase: GetSavedTokenUseCase
 ) : ViewModel() {
 
     var uiState by mutableStateOf(AdminUsersUiState())
         private set
 
+    private var currentUserId: String? = null
+
     init {
-        loadUsers()
+        viewModelScope.launch {
+            val token = getSavedTokenUseCase().first()
+            val access = token?.accessToken
+            currentUserId = access?.let { extractUserIdFromJwt(it) }
+            loadUsers()
+        }
     }
 
     fun loadUsers() {
@@ -76,6 +86,11 @@ class AdminUsersViewModel(
     }
 
     fun deleteUser(userId: String) {
+        if (userId == currentUserId) {
+            uiState = uiState.copy(error = "Нельзя удалить самого себя")
+            return
+        }
+
         viewModelScope.launch {
             try {
                 deleteUserUseCase(userId)
@@ -86,9 +101,3 @@ class AdminUsersViewModel(
         }
     }
 }
-
-data class AdminUsersUiState(
-    val users: List<User> = emptyList(),
-    val isLoading: Boolean = false,
-    val error: String? = null
-)
