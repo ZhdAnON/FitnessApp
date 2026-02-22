@@ -35,8 +35,12 @@ class UserRepositoryImpl(
     override suspend fun updateUserPassword(userId: String, newPassword: String) {
         userApi.updateUserPassword(
             userId,
-            UpdatePasswordRequestDto(newPassword)
+            UpdatePasswordRequestDto(password = newPassword)
         )
+    }
+
+    override suspend fun changeOwnPassword(newPassword: String) {
+        userApi.changeOwnPassword(UpdatePasswordRequestDto(password = newPassword))
     }
 
     override suspend fun deleteUser(userId: String) {

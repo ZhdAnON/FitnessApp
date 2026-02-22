@@ -29,6 +29,7 @@ import com.zhdanon.fitnessapp.domain.models.auth.User
 @Composable
 fun UserItem(
     user: User,
+    isCurrentUser: Boolean,
     onChangeRole: () -> Unit,
     onChangePassword: () -> Unit,
     onDelete: () -> Unit
@@ -50,14 +51,8 @@ fun UserItem(
         ) {
 
             Column {
-                Text(
-                    text = user.email,
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Text(
-                    text = "Роль: ${user.role}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
+                Text(user.email, style = MaterialTheme.typography.titleMedium)
+                Text("Роль: ${user.role}", style = MaterialTheme.typography.bodyMedium)
             }
 
             Box {
@@ -76,6 +71,7 @@ fun UserItem(
                             onChangeRole()
                         }
                     )
+
                     DropdownMenuItem(
                         text = { Text("Изменить пароль") },
                         onClick = {
@@ -83,13 +79,16 @@ fun UserItem(
                             onChangePassword()
                         }
                     )
-                    DropdownMenuItem(
-                        text = { Text("Удалить") },
-                        onClick = {
-                            expanded = false
-                            onDelete()
-                        }
-                    )
+
+                    if (!isCurrentUser) {
+                        DropdownMenuItem(
+                            text = { Text("Удалить") },
+                            onClick = {
+                                expanded = false
+                                onDelete()
+                            }
+                        )
+                    }
                 }
             }
         }

@@ -34,7 +34,9 @@ class AdminUsersViewModel(
         viewModelScope.launch {
             val token = getSavedTokenUseCase().first()
             val access = token?.accessToken
-            currentUserId = access?.let { extractUserIdFromJwt(it) }
+            val id = access?.let { extractUserIdFromJwt(it) }
+            currentUserId = id
+            uiState = uiState.copy(currentUserId = id)
             loadUsers()
         }
     }

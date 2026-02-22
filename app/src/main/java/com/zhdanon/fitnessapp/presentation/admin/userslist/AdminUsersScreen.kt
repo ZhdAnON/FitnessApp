@@ -72,6 +72,7 @@ fun AdminUsersScreen(
             items(state.users) { user ->
                 UserItem(
                     user = user,
+                    isCurrentUser = (user.id == state.currentUserId),
                     onChangeRole = { showRoleDialog = user.id },
                     onChangePassword = { showPasswordDialog = user.id },
                     onDelete = { userToDelete = user.id }

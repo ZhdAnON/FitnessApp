@@ -59,12 +59,27 @@ class UserApiImpl(
     }
 
     override suspend fun updateUserPassword(userId: String, request: UpdatePasswordRequestDto) {
+        println("DEBUG: updateUserPassword → userId=$userId, body=$request")
         client.put {
             url {
                 protocol = URLProtocol.HTTP
                 host = apiConfig.HOST
                 port = apiConfig.PORT
                 path("admin", "users", userId, "password")
+            }
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }
+    }
+
+    override suspend fun changeOwnPassword(request: UpdatePasswordRequestDto) {
+        println("DEBUG: updateUserPassword → body=$request")
+        client.put {
+            url {
+                protocol = URLProtocol.HTTP
+                host = apiConfig.HOST
+                port = apiConfig.PORT
+                path("user", "password")
             }
             contentType(ContentType.Application.Json)
             setBody(request)

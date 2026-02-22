@@ -10,5 +10,6 @@ interface UserApi {
     suspend fun addUser(request: AddUserRequestDto): UserDto
     suspend fun updateUserRole(userId: String, request: UpdateRoleRequestDto)
     suspend fun updateUserPassword(userId: String, request: UpdatePasswordRequestDto)
+    suspend fun changeOwnPassword(request: UpdatePasswordRequestDto)
     suspend fun deleteUser(userId: String)
 }
