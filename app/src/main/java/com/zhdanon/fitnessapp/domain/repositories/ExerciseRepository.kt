@@ -5,5 +5,6 @@ import com.zhdanon.fitnessapp.domain.models.workouts.Exercise
 
 interface ExerciseRepository {
     suspend fun getExercises(): List<Exercise>
+    suspend fun getExerciseById(id: String): Exercise
     suspend fun createExercise(exercise: ExerciseRequest): Exercise
 }

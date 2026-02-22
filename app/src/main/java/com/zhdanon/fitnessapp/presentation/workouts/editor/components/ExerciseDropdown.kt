@@ -14,7 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.zhdanon.fitnessapp.presentation.workouts.exercises.ExerciseListViewModel
+import com.zhdanon.fitnessapp.presentation.admin.exercises.ExerciseListViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

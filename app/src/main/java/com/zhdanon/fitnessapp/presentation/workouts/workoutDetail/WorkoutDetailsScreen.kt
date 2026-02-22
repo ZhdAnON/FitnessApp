@@ -29,7 +29,8 @@ fun WorkoutDetailScreen(
     workout: Workout,
     exercises: Map<String, Exercise>,
     onEdit: (String) -> Unit,
-    isAdmin: Boolean
+    isAdmin: Boolean,
+    onExerciseClick: (String) -> Unit
 ) {
     Column {
         Spacer(Modifier.statusBarsPadding())
@@ -53,13 +54,9 @@ fun WorkoutDetailScreen(
                         overflow = TextOverflow.Ellipsis
                     )
 
-
                     if (isAdmin) {
                         IconButton(onClick = { onEdit(workout.id) }) {
-                            Icon(
-                                imageVector = Icons.Default.Edit,
-                                contentDescription = "Редактировать"
-                            )
+                            Icon(Icons.Default.Edit, contentDescription = "Редактировать")
                         }
                     }
                 }
@@ -70,7 +67,8 @@ fun WorkoutDetailScreen(
                     WorkoutSetBlock(
                         setNumber = index + 1,
                         set = set,
-                        exercises = exercises
+                        exercises = exercises,
+                        onExerciseClick = onExerciseClick
                     )
                     Spacer(Modifier.height(16.dp))
                 }

@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zhdanon.fitnessapp.data.dto.workouts.ExerciseRequest
+import com.zhdanon.fitnessapp.domain.models.workouts.Muscle
 import com.zhdanon.fitnessapp.domain.usecases.exercises.AddExerciseUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -16,7 +17,7 @@ class AddExerciseViewModel(
 ) : ViewModel() {
 
     var name by mutableStateOf("")
-    var muscleGroups by mutableStateOf("")
+    var selectedMuscles by mutableStateOf<List<Muscle>>(emptyList())
     var technique by mutableStateOf("")
     var videoUrl by mutableStateOf("")
     var error by mutableStateOf<String?>(null)
@@ -34,7 +35,7 @@ class AddExerciseViewModel(
                 addExerciseUseCase(
                     ExerciseRequest(
                         name = name,
-                        muscleGroups = muscleGroups.split(",").map { it.trim() },
+                        muscleGroups = selectedMuscles.map { it.title },
                         technique = technique,
                         videoUrl = videoUrl.ifBlank { null }
                     )

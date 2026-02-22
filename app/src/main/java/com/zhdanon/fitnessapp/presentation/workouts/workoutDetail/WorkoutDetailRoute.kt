@@ -11,7 +11,8 @@ fun WorkoutDetailRoute(
     workoutId: String,
     isAdmin: Boolean,
     workoutViewModel: WorkoutDetailViewModel = koinViewModel(),
-    onEdit: (String) -> Unit
+    onEdit: (String) -> Unit,
+    onExerciseClick: (String) -> Unit
 ) {
     val state = workoutViewModel.uiState
 
@@ -22,11 +23,13 @@ fun WorkoutDetailRoute(
     when {
         state.isLoading -> CircularProgressIndicator()
         state.error != null -> Text("Ошибка: ${state.error}")
-        state.workout != null -> WorkoutDetailScreen(
-            workout = state.workout,
-            exercises = state.exercises,
-            onEdit = onEdit,
-            isAdmin = isAdmin
-        )
+        state.workout != null ->
+            WorkoutDetailScreen(
+                workout = state.workout,
+                exercises = state.exercises,
+                onEdit = onEdit,
+                isAdmin = isAdmin,
+                onExerciseClick = onExerciseClick
+            )
     }
 }

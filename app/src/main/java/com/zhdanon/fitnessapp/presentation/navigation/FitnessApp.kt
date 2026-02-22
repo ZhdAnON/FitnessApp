@@ -102,7 +102,10 @@ fun FitnessNavHost(startDestination: String) {
                 onEdit = { id ->
                     navController.navigate("editWorkout/$id")
                 },
-                isAdmin = isAdmin
+                isAdmin = isAdmin,
+                onExerciseClick = { exerciseId ->
+                    navController.navigate("exercise/$exerciseId")
+                }
             )
         }
 

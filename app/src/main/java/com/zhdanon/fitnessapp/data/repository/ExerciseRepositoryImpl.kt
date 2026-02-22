@@ -13,6 +13,10 @@ class ExerciseRepositoryImpl(
         return exerciseApi.getExercises()
     }
 
+    override suspend fun getExerciseById(id: String): Exercise {
+        return exerciseApi.getExerciseById(id)
+    }
+
     override suspend fun createExercise(exercise: ExerciseRequest): Exercise {
         return exerciseApi.createExercise(exercise)
     }

@@ -20,6 +20,7 @@ import com.zhdanon.fitnessapp.domain.usecases.workouts.ToggleFavoriteWorkoutUseC
 import com.zhdanon.fitnessapp.domain.usecases.workouts.UpdateWorkoutUseCase
 import com.zhdanon.fitnessapp.domain.usecases.auth.UpdateUserPasswordUseCase
 import com.zhdanon.fitnessapp.domain.usecases.auth.UpdateUserRoleUseCase
+import com.zhdanon.fitnessapp.domain.usecases.exercises.GetExerciseByIdUseCase
 import com.zhdanon.fitnessapp.domain.usecases.exercises.GetExerciseUseCase
 import org.koin.dsl.module
 
@@ -27,6 +28,7 @@ val domainModule = module {
     factory { AddExerciseUseCase(get()) }
     factory { AutoLoginUseCase(get()) }
     factory { ChangeOwnPasswordUseCase(get()) }
+    factory { GetExerciseByIdUseCase(get()) }
     factory { GetExerciseUseCase(get()) }
     factory { AddWorkoutUseCase(get()) }
     factory { AddUserUseCase(get()) }

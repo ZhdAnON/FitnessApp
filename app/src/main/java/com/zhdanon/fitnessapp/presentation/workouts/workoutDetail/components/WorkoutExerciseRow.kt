@@ -1,5 +1,6 @@
 package com.zhdanon.fitnessapp.presentation.workouts.workoutDetail.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,11 +18,13 @@ import com.zhdanon.fitnessapp.presentation.workouts.editor.mapper.toPrettyString
 fun WorkoutExerciseRow(
     index: Int,
     exercise: WorkoutExercise,
-    baseExercise: Exercise?
+    baseExercise: Exercise?,
+    onExerciseClick: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onExerciseClick(exercise.exerciseId) }
             .padding(vertical = 16.dp)
     ) {
         Text(

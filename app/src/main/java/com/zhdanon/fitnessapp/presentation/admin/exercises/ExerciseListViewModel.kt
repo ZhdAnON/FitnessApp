@@ -1,4 +1,4 @@
-package com.zhdanon.fitnessapp.presentation.workouts.exercises
+package com.zhdanon.fitnessapp.presentation.admin.exercises
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

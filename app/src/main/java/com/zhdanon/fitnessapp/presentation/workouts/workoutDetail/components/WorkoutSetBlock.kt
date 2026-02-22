@@ -20,7 +20,8 @@ import com.zhdanon.fitnessapp.presentation.workouts.editor.mapper.toPrettyString
 fun WorkoutSetBlock(
     setNumber: Int,
     set: WorkoutSet,
-    exercises: Map<String, Exercise>
+    exercises: Map<String, Exercise>,
+    onExerciseClick: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -39,7 +40,8 @@ fun WorkoutSetBlock(
             WorkoutExerciseRow(
                 index = exIndex + 1,
                 exercise = exercise,
-                baseExercise = exercises[exercise.exerciseId]
+                baseExercise = exercises[exercise.exerciseId],
+                onExerciseClick = onExerciseClick
             )
         }
     }

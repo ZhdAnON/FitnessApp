@@ -65,7 +65,7 @@ fun AdminRootScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Admin panel") },
+                title = { Text("Режим администратора") },
                 actions = {
                     IconButton(onClick = { menuExpanded = true }) {
                         Icon(Icons.Default.MoreVert, contentDescription = "Menu")

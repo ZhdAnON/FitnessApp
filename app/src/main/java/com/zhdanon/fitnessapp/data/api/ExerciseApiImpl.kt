@@ -2,6 +2,7 @@ package com.zhdanon.fitnessapp.data.api
 
 import com.zhdanon.fitnessapp.data.dto.workouts.ExerciseDto
 import com.zhdanon.fitnessapp.data.dto.workouts.ExerciseRequest
+import com.zhdanon.fitnessapp.data.mapper.toDomain
 import com.zhdanon.fitnessapp.domain.api.ApiConfig
 import com.zhdanon.fitnessapp.domain.api.ExerciseApi
 import com.zhdanon.fitnessapp.domain.models.workouts.Exercise
@@ -38,6 +39,18 @@ class ExerciseApiImpl(
                     videoUrl = dto.videoUrl
                 )
             }
+    }
+
+    override suspend fun getExerciseById(id: String): Exercise {
+        val dto = client.get {
+            url {
+                protocol = URLProtocol.HTTP
+                host = apiConfig.HOST
+                port = apiConfig.PORT
+                path("/exercises", id)
+            }
+        }.body<ExerciseDto>()
+        return dto.toDomain()
     }
 
 

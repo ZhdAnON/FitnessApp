@@ -12,9 +12,12 @@ import com.zhdanon.fitnessapp.presentation.admin.userslist.AdminUsersScreen
 import com.zhdanon.fitnessapp.presentation.admin.addexercise.AddExerciseRoute
 import com.zhdanon.fitnessapp.presentation.workouts.editor.EditWorkoutRoute
 import com.zhdanon.fitnessapp.presentation.workouts.editor.EditWorkoutViewModel
-import com.zhdanon.fitnessapp.presentation.workouts.exercises.ExerciseListScreen
+import com.zhdanon.fitnessapp.presentation.admin.exercises.ExerciseListScreen
+import com.zhdanon.fitnessapp.presentation.workouts.exerciseDetail.ExerciseDetailScreen
+import com.zhdanon.fitnessapp.presentation.workouts.exerciseDetail.ExerciseDetailViewModel
 import com.zhdanon.fitnessapp.presentation.workouts.workoutDetail.WorkoutDetailRoute
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -48,8 +51,17 @@ fun AdminInnerNavHost(navController: NavHostController) {
 
         composable("exercises") {
             ExerciseListScreen(
+                navController = navController,
                 onAddExercise = { navController.navigate("addExercise") }
             )
+        }
+
+        composable("exercise/{id}") { backStack ->
+            val viewModel: ExerciseDetailViewModel = koinViewModel(
+                parameters = { parametersOf(backStack.savedStateHandle) }
+            )
+
+            ExerciseDetailScreen(viewModel = viewModel)
         }
 
         composable("users") {
@@ -62,7 +74,10 @@ fun AdminInnerNavHost(navController: NavHostController) {
             WorkoutDetailRoute(
                 workoutId = id,
                 isAdmin = isAdmin,
-                onEdit = { navController.navigate("editWorkout/$id") }
+                onEdit = { navController.navigate("editWorkout/$id") },
+                onExerciseClick = { exerciseId ->
+                    navController.navigate("exercise/$exerciseId")
+                }
             )
         }
 

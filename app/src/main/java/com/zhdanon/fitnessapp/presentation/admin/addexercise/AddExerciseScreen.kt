@@ -44,11 +44,9 @@ fun AddExerciseScreen(
 
         Spacer(Modifier.height(12.dp))
 
-        OutlinedTextField(
-            value = viewModel.muscleGroups,
-            onValueChange = { viewModel.muscleGroups = it },
-            label = { Text("Мышечные группы (через запятую)") },
-            modifier = Modifier.fillMaxWidth()
+        MuscleSelector(
+            selected = viewModel.selectedMuscles,
+            onSelectedChange = { viewModel.selectedMuscles = it }
         )
 
         Spacer(Modifier.height(12.dp))
