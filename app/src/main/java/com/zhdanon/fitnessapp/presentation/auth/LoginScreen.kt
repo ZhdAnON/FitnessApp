@@ -14,7 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.zhdanon.fitnessapp.R
 import com.zhdanon.fitnessapp.domain.models.auth.User
+import com.zhdanon.fitnessapp.presentation.background.BackgroundContainer
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -24,42 +26,44 @@ fun LoginScreen(
 ) {
     val state = viewModel.uiState
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.Center
-    ) {
-        TextField(
-            value = state.email,
-            onValueChange = viewModel::onEmailChange,
-            label = { Text("Email") }
-        )
-
-        Spacer(Modifier.height(16.dp))
-
-        TextField(
-            value = state.password,
-            onValueChange = viewModel::onPasswordChange,
-            label = { Text("Password") }
-        )
-
-        Spacer(Modifier.height(24.dp))
-
-        Button(
-            onClick = {
-                viewModel.onLoginClick { user ->
-                    onLoginSuccess(user)
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
+    BackgroundContainer(backgroundRes = R.drawable.bg_login) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
+            verticalArrangement = Arrangement.Center
         ) {
-            Text("Войти")
-        }
+            TextField(
+                value = state.email,
+                onValueChange = viewModel::onEmailChange,
+                label = { Text("Email") }
+            )
 
-        state.error?.let {
             Spacer(Modifier.height(16.dp))
-            Text(text = it, color = Color.Red)
+
+            TextField(
+                value = state.password,
+                onValueChange = viewModel::onPasswordChange,
+                label = { Text("Password") }
+            )
+
+            Spacer(Modifier.height(24.dp))
+
+            Button(
+                onClick = {
+                    viewModel.onLoginClick { user ->
+                        onLoginSuccess(user)
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Войти")
+            }
+
+            state.error?.let {
+                Spacer(Modifier.height(16.dp))
+                Text(text = it, color = Color.Red)
+            }
         }
     }
 }

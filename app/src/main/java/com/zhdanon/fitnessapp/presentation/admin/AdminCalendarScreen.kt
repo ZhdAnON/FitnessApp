@@ -3,7 +3,10 @@ package com.zhdanon.fitnessapp.presentation.admin
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,6 +18,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.NavController
+import com.zhdanon.fitnessapp.R
+import com.zhdanon.fitnessapp.presentation.background.BackgroundContainer
 import com.zhdanon.fitnessapp.presentation.workouts.workoutsList.components.WorkoutCalendar
 import com.zhdanon.fitnessapp.presentation.workouts.workoutsList.components.WorkoutsList
 import com.zhdanon.fitnessapp.presentation.workouts.workoutsList.WorkoutViewModel
@@ -44,34 +49,45 @@ fun AdminCalenderScreen(
         }
     }
 
+    BackgroundContainer(backgroundRes = R.drawable.bg_workouts) {
+        Column {
+            Card(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White.copy(alpha = 0.9f)
+                )
+            ) {
+                // Календарь
+                WorkoutCalendar(
+                    selectedDate = workoutViewModel.selectedDate,
+                    workoutDates = workoutViewModel.workoutDates,
+                    onDateSelected = { workoutViewModel.onDateSelected(it) }
+                )
+            }
 
-    Column {
-        // Календарь
-        WorkoutCalendar(
-            selectedDate = workoutViewModel.selectedDate,
-            workoutDates = workoutViewModel.workoutDates,
-            onDateSelected = { workoutViewModel.onDateSelected(it) }
-        )
-        // Список тренировок выбранной даты
-        when {
-            state.isLoading -> CircularProgressIndicator()
-            state.error != null -> Text("Ошибка: ${state.error}")
-            else -> {
-                val workouts = workoutViewModel.workoutsOfSelectedDate
+            // Список тренировок выбранной даты
+            when {
+                state.isLoading -> CircularProgressIndicator()
+                state.error != null -> Text("Ошибка: ${state.error}")
+                else -> {
+                    val workouts = workoutViewModel.workoutsOfSelectedDate
 
-                if (workouts.isEmpty()) {
-                    Text(
-                        text = "Выходной",
-                        modifier = Modifier.padding(16.dp),
-                        color = Color.Gray
-                    )
-                } else {
-                    WorkoutsList(
-                        workouts = workouts,
-                        isAdmin = true,
-                        onClick = onWorkoutClick,
-                        onDelete = workoutViewModel::deleteWorkout
-                    )
+                    if (workouts.isEmpty()) {
+                        Text(
+                            text = "Выходной",
+                            modifier = Modifier.padding(16.dp),
+                            color = Color.Gray
+                        )
+                    } else {
+                        WorkoutsList(
+                            workouts = workouts,
+                            isAdmin = true,
+                            onClick = onWorkoutClick,
+                            onDelete = workoutViewModel::deleteWorkout
+                        )
+                    }
                 }
             }
         }

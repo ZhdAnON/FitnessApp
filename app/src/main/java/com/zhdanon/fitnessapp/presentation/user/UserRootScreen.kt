@@ -7,10 +7,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -20,6 +23,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,7 +32,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.zhdanon.fitnessapp.R
 import com.zhdanon.fitnessapp.presentation.auth.AuthViewModel
+import com.zhdanon.fitnessapp.presentation.background.BackgroundContainer
 import com.zhdanon.fitnessapp.presentation.workouts.workoutsList.components.WorkoutCalendar
 import com.zhdanon.fitnessapp.presentation.workouts.workoutsList.components.WorkoutsList
 import org.koin.compose.viewmodel.koinViewModel
@@ -46,76 +52,93 @@ fun UserRootScreen(
     var menuExpanded by remember { mutableStateOf(false) }
     var showPasswordDialog by remember { mutableStateOf(false) }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Тренировки") },
-                actions = {
-                    Box {
-                        IconButton(onClick = { menuExpanded = true }) {
-                            Icon(Icons.Default.MoreVert, contentDescription = "Меню")
-                        }
+    BackgroundContainer(backgroundRes = R.drawable.bg_workouts) {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Тренировки") },
+                    actions = {
+                        Box {
+                            IconButton(onClick = { menuExpanded = true }) {
+                                Icon(Icons.Default.MoreVert, contentDescription = "Меню")
+                            }
 
-                        DropdownMenu(
-                            expanded = menuExpanded,
-                            onDismissRequest = { menuExpanded = false }
-                        ) {
-                            DropdownMenuItem(
-                                text = { Text("Сменить пароль") },
-                                onClick = {
-                                    menuExpanded = false
-                                    showPasswordDialog = true
-                                }
-                            )
-                            DropdownMenuItem(
-                                text = { Text("Выйти") },
-                                onClick = {
-                                    menuExpanded = false
-                                    authViewModel.logout()
-                                }
-                            )
+                            DropdownMenu(
+                                expanded = menuExpanded,
+                                onDismissRequest = { menuExpanded = false }
+                            ) {
+                                DropdownMenuItem(
+                                    text = { Text("Сменить пароль") },
+                                    onClick = {
+                                        menuExpanded = false
+                                        showPasswordDialog = true
+                                    }
+                                )
+                                DropdownMenuItem(
+                                    text = { Text("Выйти") },
+                                    onClick = {
+                                        menuExpanded = false
+                                        authViewModel.logout()
+                                    }
+                                )
+                            }
                         }
-                    }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = Color.Transparent,
+                        titleContentColor = Color.White,
+                        actionIconContentColor = Color.White
+                    )
+                )
+            },
+            containerColor = Color.Transparent,
+            contentColor = Color.White,
+        ) { padding ->
+
+            Column(
+                modifier = Modifier
+                    .padding(padding)   // ← ВАЖНО: Scaffold сам даёт правильные отступы
+                    .fillMaxSize()
+            ) {
+                Card(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White.copy(alpha = 0.9f)
+                    )
+                ) {
+                    // Календарь
+                    WorkoutCalendar(
+                        selectedDate = viewModel.selectedDate,
+                        workoutDates = viewModel.workoutDates,
+                        onDateSelected = { viewModel.onDateSelected(it) }
+                    )
                 }
-            )
-        }
-    ) { padding ->
 
-        Column(
-            modifier = Modifier
-                .padding(padding)   // ← ВАЖНО: Scaffold сам даёт правильные отступы
-                .fillMaxSize()
-        ) {
+                Spacer(Modifier.height(16.dp))
 
-            // Календарь
-            WorkoutCalendar(
-                selectedDate = viewModel.selectedDate,
-                workoutDates = viewModel.workoutDates,
-                onDateSelected = { viewModel.onDateSelected(it) }
-            )
+                // Список тренировок выбранной даты
+                when {
+                    state.isLoading -> CircularProgressIndicator()
+                    state.error != null -> Text("Ошибка: ${state.error}")
+                    else -> {
+                        val workouts = viewModel.workoutsOfSelectedDate
 
-            Spacer(Modifier.height(16.dp))
-
-            // Список тренировок выбранной даты
-            when {
-                state.isLoading -> CircularProgressIndicator()
-                state.error != null -> Text("Ошибка: ${state.error}")
-                else -> {
-                    val workouts = viewModel.workoutsOfSelectedDate
-
-                    if (workouts.isEmpty()) {
-                        Text(
-                            text = "Выходной",
-                            modifier = Modifier.padding(16.dp),
-                            color = Color.Gray
-                        )
-                    } else {
-                        WorkoutsList(
-                            workouts = workouts,
-                            isAdmin = false,
-                            onClick = onWorkoutClick,
-                            onDelete = { }
-                        )
+                        if (workouts.isEmpty()) {
+                            Text(
+                                text = "Выходной",
+                                modifier = Modifier.padding(16.dp),
+                                color = Color.Gray
+                            )
+                        } else {
+                            WorkoutsList(
+                                workouts = workouts,
+                                isAdmin = false,
+                                onClick = onWorkoutClick,
+                                onDelete = { }
+                            )
+                        }
                     }
                 }
             }
