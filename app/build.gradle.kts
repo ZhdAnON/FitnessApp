@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.material.icons.extended)
     implementation(libs.activity.compose)
+
     // Navigation Compose
     implementation(libs.navigation.compose)
     // Koin (DI)

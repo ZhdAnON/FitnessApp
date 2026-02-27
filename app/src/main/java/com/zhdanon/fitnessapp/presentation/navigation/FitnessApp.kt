@@ -19,6 +19,8 @@ import com.zhdanon.fitnessapp.presentation.admin.AdminRootScreen
 import com.zhdanon.fitnessapp.presentation.auth.AuthStateViewModel
 import com.zhdanon.fitnessapp.presentation.auth.AuthViewModel
 import com.zhdanon.fitnessapp.presentation.auth.LoginScreen
+import com.zhdanon.fitnessapp.presentation.nutrition.NutritionDetailScreen
+import com.zhdanon.fitnessapp.presentation.nutrition.NutritionListScreen
 import com.zhdanon.fitnessapp.presentation.user.UserRootScreen
 import com.zhdanon.fitnessapp.presentation.workouts.workoutDetail.WorkoutDetailRoute
 import org.koin.compose.viewmodel.koinViewModel
@@ -114,6 +116,15 @@ fun FitnessNavHost(startDestination: String) {
             AdminRootScreen(
                 authViewModel = authViewModel
             )
+        }
+
+        // Nutrition
+        composable("nutrition") {
+            NutritionListScreen(navController = navController, isAdmin = false)
+        }
+        composable("nutrition/{id}") { backStack ->
+            val id = backStack.arguments?.getString("id")!!
+            NutritionDetailScreen(id, navController)
         }
     }
 }

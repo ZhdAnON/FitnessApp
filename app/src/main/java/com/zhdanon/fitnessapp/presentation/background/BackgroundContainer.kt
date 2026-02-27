@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 
@@ -17,8 +18,7 @@ fun BackgroundContainer(
     content: @Composable () -> Unit
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         Image(
             painter = painterResource(backgroundRes),
@@ -27,12 +27,21 @@ fun BackgroundContainer(
             contentScale = ContentScale.Crop
         )
 
-        // затемнение
+        // затемнение — НУЖНО отключить клики
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.Black.copy(alpha = 0.05f))
+                .pointerInput(Unit) {} // ← блокирует pointerInput, но НЕ клики
         )
-        content()
+
+        // контент — кликабельный
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .pointerInput(Unit) {} // ← гарантирует, что клики доходят
+        ) {
+            content()
+        }
     }
 }

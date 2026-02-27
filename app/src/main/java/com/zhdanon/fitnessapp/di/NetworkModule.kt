@@ -5,11 +5,13 @@ import com.zhdanon.fitnessapp.domain.api.WorkoutApi
 import com.zhdanon.fitnessapp.domain.api.UserApi
 import com.zhdanon.fitnessapp.data.api.AuthApiImpl
 import com.zhdanon.fitnessapp.data.api.ExerciseApiImpl
+import com.zhdanon.fitnessapp.data.api.NutritionApiImpl
 import com.zhdanon.fitnessapp.data.repository.AuthRepositoryImpl
 import com.zhdanon.fitnessapp.data.api.WorkoutApiImpl
 import com.zhdanon.fitnessapp.data.api.UserApiImpl
 import com.zhdanon.fitnessapp.data.datastore.TokenStorageImpl
 import com.zhdanon.fitnessapp.data.repository.ExerciseRepositoryImpl
+import com.zhdanon.fitnessapp.data.repository.NutritionRepositoryImpl
 import com.zhdanon.fitnessapp.data.repository.WorkoutRepositoryImpl
 import com.zhdanon.fitnessapp.data.repository.UserRepositoryImpl
 import com.zhdanon.fitnessapp.domain.api.ExerciseApi
@@ -18,6 +20,8 @@ import com.zhdanon.fitnessapp.domain.repositories.AuthRepository
 import com.zhdanon.fitnessapp.domain.repositories.WorkoutRepository
 import com.zhdanon.fitnessapp.domain.repositories.UserRepository
 import com.zhdanon.fitnessapp.domain.api.ApiConfig
+import com.zhdanon.fitnessapp.domain.api.NutritionApi
+import com.zhdanon.fitnessapp.domain.repositories.NutritionRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.DefaultRequest
@@ -109,6 +113,14 @@ val networkModule = module {
         )
     }
 
+    single<NutritionApi> {
+        NutritionApiImpl(
+            client = get(named("mainClient")),
+            tokenStorage = get(),
+            apiConfig = get()
+        )
+    }
+
     // Repositories
     single<AuthRepository> {
         AuthRepositoryImpl(
@@ -116,8 +128,8 @@ val networkModule = module {
             tokenStorage = get()
         )
     }
-
     single<UserRepository> { UserRepositoryImpl(get()) }
     single<WorkoutRepository> { WorkoutRepositoryImpl(get()) }
     single<ExerciseRepositoryImpl> { ExerciseRepositoryImpl(get()) }
+    single<NutritionRepository> { NutritionRepositoryImpl(get()) }
 }

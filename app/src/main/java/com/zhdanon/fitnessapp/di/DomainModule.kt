@@ -22,29 +22,46 @@ import com.zhdanon.fitnessapp.domain.usecases.auth.UpdateUserPasswordUseCase
 import com.zhdanon.fitnessapp.domain.usecases.auth.UpdateUserRoleUseCase
 import com.zhdanon.fitnessapp.domain.usecases.exercises.GetExerciseByIdUseCase
 import com.zhdanon.fitnessapp.domain.usecases.exercises.GetExerciseUseCase
+import com.zhdanon.fitnessapp.domain.usecases.nutrition.CreateNutritionProgramUseCase
+import com.zhdanon.fitnessapp.domain.usecases.nutrition.DeleteNutritionProgramUseCase
+import com.zhdanon.fitnessapp.domain.usecases.nutrition.GetAllNutritionProgramsUseCase
+import com.zhdanon.fitnessapp.domain.usecases.nutrition.GetNutritionProgramDetailsUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
-    factory { AddExerciseUseCase(get()) }
-    factory { AutoLoginUseCase(get()) }
-    factory { ChangeOwnPasswordUseCase(get()) }
-    factory { GetExerciseByIdUseCase(get()) }
-    factory { GetExerciseUseCase(get()) }
-    factory { AddWorkoutUseCase(get()) }
-    factory { AddUserUseCase(get()) }
-    factory { DeleteWorkoutUseCase(get()) }
-    factory { DeleteUserUseCase(get()) }
-    factory { FetchProfileUseCase(get()) }
-    factory { GetAllWorkoutsUseCase(get()) }
-    factory { GetAllUsersUseCase(get()) }
-    factory { GetCurrentUserUseCase(get()) }
-    factory { GetExercisesUseCase(get()) }
-    factory { GetSavedTokenUseCase(get()) }
-    factory { GetWorkoutUseCase(get()) }
+    // Auth
     factory { LoginUseCase(get()) }
     factory { LogoutUseCase(get()) }
-    factory { ToggleFavoriteWorkoutUseCase(get()) }
-    factory { UpdateWorkoutUseCase(get()) }
+    factory { AutoLoginUseCase(get()) }
+    factory { FetchProfileUseCase(get()) }
+    factory { GetSavedTokenUseCase(get()) }
+
+    // Users
+    factory { AddUserUseCase(get()) }
+    factory { DeleteUserUseCase(get()) }
     factory { UpdateUserPasswordUseCase(get()) }
     factory { UpdateUserRoleUseCase(get()) }
+    factory { ChangeOwnPasswordUseCase(get()) }
+    factory { GetAllUsersUseCase(get()) }
+    factory { GetCurrentUserUseCase(get()) }
+
+    // Workouts
+    factory { AddWorkoutUseCase(get()) }
+    factory { DeleteWorkoutUseCase(get()) }
+    factory { GetAllWorkoutsUseCase(get()) }
+    factory { GetWorkoutUseCase(get()) }
+    factory { ToggleFavoriteWorkoutUseCase(get()) }
+    factory { UpdateWorkoutUseCase(get()) }
+
+    // Exercises
+    factory { AddExerciseUseCase(get()) }
+    factory { GetExerciseByIdUseCase(get()) }
+    factory { GetExerciseUseCase(get()) }
+    factory { GetExercisesUseCase(get()) }
+
+    // Nutrition
+    factory { CreateNutritionProgramUseCase(get()) }
+    factory { DeleteNutritionProgramUseCase(get()) }
+    factory { GetAllNutritionProgramsUseCase(get()) }
+    factory { GetNutritionProgramDetailsUseCase(get()) }
 }

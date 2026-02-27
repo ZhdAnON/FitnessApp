@@ -8,8 +8,11 @@ import com.zhdanon.fitnessapp.presentation.admin.addexercise.AddExerciseViewMode
 import com.zhdanon.fitnessapp.presentation.auth.AuthStateViewModel
 import com.zhdanon.fitnessapp.presentation.auth.AuthViewModel
 import com.zhdanon.fitnessapp.presentation.admin.exercises.ExerciseListViewModel
+import com.zhdanon.fitnessapp.presentation.admin.nutrition.CreateNutritionViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import com.zhdanon.fitnessapp.presentation.auth.LoginViewModel
+import com.zhdanon.fitnessapp.presentation.nutrition.NutritionDetailViewModel
+import com.zhdanon.fitnessapp.presentation.nutrition.NutritionListViewModel
 import com.zhdanon.fitnessapp.presentation.workouts.editor.EditWorkoutViewModel
 import com.zhdanon.fitnessapp.presentation.workouts.exerciseDetail.ExerciseDetailViewModel
 import com.zhdanon.fitnessapp.presentation.workouts.workoutDetail.WorkoutDetailViewModel
@@ -85,4 +88,9 @@ val presentationModule = module {
             savedStateHandle = handle
         )
     }
+
+    // Nutrition
+    viewModel { CreateNutritionViewModel(createUseCase = get()) }
+    viewModel { NutritionDetailViewModel(getDetailsUseCase = get()) }
+    viewModel { NutritionListViewModel(getAllUseCase = get()) }
 }

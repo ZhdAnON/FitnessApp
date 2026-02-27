@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Group
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
@@ -116,6 +117,28 @@ fun AdminRootScreen(
                             onClick = {
                                 menuExpanded = false
                                 adminNavController.navigate("addExercise")
+                            }
+                        )
+
+                        DropdownMenuItem(
+                            leadingIcon = {
+                                Icon(Icons.Default.List, contentDescription = null)
+                            },
+                            text = { Text("Программы питания") },
+                            onClick = {
+                                menuExpanded = false
+                                adminNavController.navigate("nutrition")
+                            }
+                        )
+
+                        DropdownMenuItem(
+                            leadingIcon = {
+                                Icon(Icons.Default.Add, contentDescription = null)
+                            },
+                            text = { Text("Создать программу питания") },
+                            onClick = {
+                                menuExpanded = false
+                                adminNavController.navigate("nutrition_create")
                             }
                         )
 
