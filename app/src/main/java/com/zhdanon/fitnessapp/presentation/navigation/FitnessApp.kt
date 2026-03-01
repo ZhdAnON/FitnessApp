@@ -87,7 +87,8 @@ fun FitnessNavHost(startDestination: String) {
                 authViewModel = authViewModel,
                 onWorkoutClick = { id ->
                     navController.navigate("workout/$id")
-                }
+                },
+                onNutritionMenuClick = { navController.navigate("nutrition") }
             )
         }
 

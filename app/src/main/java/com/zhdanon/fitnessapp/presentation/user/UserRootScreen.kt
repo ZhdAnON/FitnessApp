@@ -45,7 +45,8 @@ import org.koin.compose.viewmodel.koinViewModel
 fun UserRootScreen(
     viewModel: UserViewModel = koinViewModel(),
     authViewModel: AuthViewModel,
-    onWorkoutClick: (String) -> Unit = {}
+    onWorkoutClick: (String) -> Unit = {},
+    onNutritionMenuClick: () -> Unit = {}
 ) {
     val state = viewModel.uiState
 
@@ -67,6 +68,13 @@ fun UserRootScreen(
                                 expanded = menuExpanded,
                                 onDismissRequest = { menuExpanded = false }
                             ) {
+                                DropdownMenuItem(
+                                    text = { Text("Программа питания") },
+                                    onClick = {
+                                        menuExpanded = false
+                                        onNutritionMenuClick()
+                                    }
+                                )
                                 DropdownMenuItem(
                                     text = { Text("Сменить пароль") },
                                     onClick = {
