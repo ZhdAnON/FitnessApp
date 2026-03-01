@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.zhdanon.fitnessapp.domain.models.auth.UserRole
+import com.zhdanon.fitnessapp.presentation.SecureScreen
 import com.zhdanon.fitnessapp.presentation.admin.AdminRootScreen
 import com.zhdanon.fitnessapp.presentation.auth.AuthStateViewModel
 import com.zhdanon.fitnessapp.presentation.auth.AuthViewModel
@@ -98,16 +99,18 @@ fun FitnessNavHost(startDestination: String) {
             arguments = listOf(navArgument("id") { type = NavType.StringType })
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id")!!
-            WorkoutDetailRoute(
-                workoutId = id,
-                onEdit = { id ->
-                    navController.navigate("editWorkout/$id")
-                },
-                isAdmin = false,
-                onExerciseClick = { exerciseId ->
-                    navController.navigate("exercise/$exerciseId")
-                }
-            )
+            SecureScreen {
+                WorkoutDetailRoute(
+                    workoutId = id,
+                    onEdit = { id ->
+                        navController.navigate("editWorkout/$id")
+                    },
+                    isAdmin = false,
+                    onExerciseClick = { exerciseId ->
+                        navController.navigate("exercise/$exerciseId")
+                    }
+                )
+            }
         }
 
         // ---------------- ADMIN ROOT ----------------
@@ -126,10 +129,12 @@ fun FitnessNavHost(startDestination: String) {
         }
         composable("nutrition/{id}") { backStack ->
             val id = backStack.arguments?.getString("id")!!
-            NutritionDetailScreen(
-                programId = id,
-                isAdmin = false
-            )
+            SecureScreen {
+                NutritionDetailScreen(
+                    programId = id,
+                    isAdmin = false
+                )
+            }
         }
     }
 }
