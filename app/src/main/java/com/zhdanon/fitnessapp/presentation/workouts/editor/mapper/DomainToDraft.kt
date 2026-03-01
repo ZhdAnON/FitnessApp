@@ -33,16 +33,36 @@ fun Workout.toDraftState() = WorkoutUiState(
 )
 
 fun Rounds.toDraft(): RoundsDraft = when (this) {
-    is Rounds.Fixed -> RoundsDraft.Fixed(count)
-    is Rounds.Range -> RoundsDraft.Range(from, to)
-    is Rounds.TimeFixed -> RoundsDraft.TimeFixed(duration)
-    is Rounds.TimeRange -> RoundsDraft.TimeRange(from, to)
+    is Rounds.Fixed -> RoundsDraft.Fixed(
+        count = count.toString()
+    )
+    is Rounds.Range -> RoundsDraft.Range(
+        from = from.toString(),
+        to = to.toString()
+    )
+    is Rounds.TimeFixed -> RoundsDraft.TimeFixed(
+        duration = duration.toString()
+    )
+    is Rounds.TimeRange -> RoundsDraft.TimeRange(
+        from = from.toString(),
+        to = to.toString()
+    )
 }
 
 fun Reps.toDraft(): RepsDraft = when (this) {
-    is Reps.Fixed -> RepsDraft.Fixed(count)
-    is Reps.Range -> RepsDraft.Range(from, to)
-    is Reps.TimeFixed -> RepsDraft.TimeFixed(duration)
-    is Reps.TimeRange -> RepsDraft.TimeRange(from, to)
+    is Reps.Fixed -> RepsDraft.Fixed(
+        count = count.toString()
+    )
+    is Reps.Range -> RepsDraft.Range(
+        from = from.toString(),
+        to = to.toString()
+    )
+    is Reps.TimeFixed -> RepsDraft.TimeFixed(
+        duration = duration.toString()
+    )
+    is Reps.TimeRange -> RepsDraft.TimeRange(
+        from = from.toString(),
+        to = to.toString()
+    )
     Reps.None -> RepsDraft.None
 }

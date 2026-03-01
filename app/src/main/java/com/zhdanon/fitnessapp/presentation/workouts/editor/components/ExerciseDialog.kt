@@ -25,7 +25,13 @@ fun ExerciseDialog(
     onConfirm: (WorkoutExerciseDraft) -> Unit
 ) {
     var exerciseId by remember { mutableStateOf(initial?.exerciseId ?: "") }
-    var reps by remember { mutableStateOf(initial?.reps ?: RepsDraft.Fixed(count = 1)) }
+
+    var reps by remember {
+        mutableStateOf(
+            initial?.reps ?: RepsDraft.Fixed(count = "")   // ← пустая строка
+        )
+    }
+
     var note by remember { mutableStateOf(initial?.note ?: "") }
 
     AlertDialog(

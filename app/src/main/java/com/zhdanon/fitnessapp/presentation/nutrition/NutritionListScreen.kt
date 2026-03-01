@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.zhdanon.fitnessapp.R
 import com.zhdanon.fitnessapp.presentation.background.BackgroundContainer
 import org.koin.compose.viewmodel.koinViewModel
@@ -30,9 +29,9 @@ import org.koin.compose.viewmodel.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NutritionListScreen(
-    navController: NavController,
     viewModel: NutritionListViewModel = koinViewModel(),
-    isAdmin: Boolean = false
+    isAdmin: Boolean = false,
+    onNutritionProgramClick: (String) -> Unit = {}
 ) {
     val programs = viewModel.programs
     val isLoading = viewModel.isLoading
@@ -78,9 +77,7 @@ fun NutritionListScreen(
                             Column(
                                 Modifier
                                     .fillMaxWidth()
-                                    .clickable {
-                                        navController.navigate("nutrition/${program.id}")
-                                    }
+                                    .clickable { onNutritionProgramClick(program.id) }
                                     .padding(vertical = 8.dp)
                             ) {
                                 Text(program.category.title, color = Color.Black)

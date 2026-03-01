@@ -121,11 +121,17 @@ fun FitnessNavHost(startDestination: String) {
 
         // Nutrition
         composable("nutrition") {
-            NutritionListScreen(navController = navController, isAdmin = false)
+            NutritionListScreen(
+                isAdmin = false,
+                onNutritionProgramClick = { id -> navController.navigate("nutrition/$id") }
+            )
         }
         composable("nutrition/{id}") { backStack ->
             val id = backStack.arguments?.getString("id")!!
-            NutritionDetailScreen(id, navController)
+            NutritionDetailScreen(
+                programId = id,
+                isAdmin = false
+            )
         }
     }
 }

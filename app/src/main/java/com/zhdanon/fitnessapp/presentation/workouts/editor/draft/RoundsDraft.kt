@@ -1,17 +1,13 @@
 package com.zhdanon.fitnessapp.presentation.workouts.editor.draft
 
 sealed class RoundsDraft(val type: RoundsTypeUi) {
-
-    data class Fixed(val count: Int) :
+    data class Fixed(val count: String = "") :
         RoundsDraft(RoundsTypeUi.FIXED)
-
-    data class Range(val from: Int, val to: Int) :
+    data class Range(val from: String = "", val to: String = "") :
         RoundsDraft(RoundsTypeUi.RANGE)
-
-    data class TimeFixed(val duration: Int) :
+    data class TimeFixed(val duration: String = "") :
         RoundsDraft(RoundsTypeUi.TIME_FIXED)
-
-    data class TimeRange(val from: Int, val to: Int) :
+    data class TimeRange(val from: String = "", val to: String = "") :
         RoundsDraft(RoundsTypeUi.TIME_RANGE)
 }
 

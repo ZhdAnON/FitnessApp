@@ -29,7 +29,6 @@ fun RoundsEditor(
 
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
 
-        // --- ОДНА СТРОКА: тип + значения ---
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -42,24 +41,26 @@ fun RoundsEditor(
                     selected = type,
                     onSelected = { newType ->
                         val newValue = when (newType) {
-                            RoundsTypeUi.FIXED -> RoundsDraft.Fixed(1)
-                            RoundsTypeUi.RANGE -> RoundsDraft.Range(1, 2)
-                            RoundsTypeUi.TIME_FIXED -> RoundsDraft.TimeFixed(60)
-                            RoundsTypeUi.TIME_RANGE -> RoundsDraft.TimeRange(60, 120)
+                            RoundsTypeUi.FIXED -> RoundsDraft.Fixed("")
+                            RoundsTypeUi.RANGE -> RoundsDraft.Range("", "")
+                            RoundsTypeUi.TIME_FIXED -> RoundsDraft.TimeFixed("")
+                            RoundsTypeUi.TIME_RANGE -> RoundsDraft.TimeRange("", "")
                         }
+                        error = false
                         onChange(newValue)
                     }
                 )
             }
 
-            // Значения (в зависимости от типа)
+            // Значения
             when (rounds) {
+
                 is RoundsDraft.Fixed -> {
                     Box(modifier = Modifier.weight(1f)) {
                         OutlinedTextField(
-                            value = rounds.count.toString(),
+                            value = rounds.count,
                             onValueChange = { v ->
-                                v.toIntOrNull()?.let { onChange(rounds.copy(count = it)) }
+                                onChange(rounds.copy(count = v))
                             },
                             label = { Text("Количество кругов") },
                             modifier = Modifier.fillMaxWidth()
@@ -70,13 +71,13 @@ fun RoundsEditor(
                 is RoundsDraft.Range -> {
                     Box(modifier = Modifier.weight(1f)) {
                         OutlinedTextField(
-                            value = rounds.from.toString(),
+                            value = rounds.from,
                             onValueChange = { v ->
-                                v.toIntOrNull()?.let {
-                                    val updated = rounds.copy(from = it)
-                                    error = updated.from > updated.to
-                                    onChange(updated)
-                                }
+                                val updated = rounds.copy(from = v)
+                                error = updated.from.toIntOrNull()?.let { f ->
+                                    updated.to.toIntOrNull()?.let { t -> f > t }
+                                } ?: false
+                                onChange(updated)
                             },
                             label = { Text("От") },
                             isError = error,
@@ -86,13 +87,13 @@ fun RoundsEditor(
 
                     Box(modifier = Modifier.weight(1f)) {
                         OutlinedTextField(
-                            value = rounds.to.toString(),
+                            value = rounds.to,
                             onValueChange = { v ->
-                                v.toIntOrNull()?.let {
-                                    val updated = rounds.copy(to = it)
-                                    error = updated.from > updated.to
-                                    onChange(updated)
-                                }
+                                val updated = rounds.copy(to = v)
+                                error = updated.from.toIntOrNull()?.let { f ->
+                                    updated.to.toIntOrNull()?.let { t -> f > t }
+                                } ?: false
+                                onChange(updated)
                             },
                             label = { Text("До") },
                             isError = error,
@@ -104,9 +105,9 @@ fun RoundsEditor(
                 is RoundsDraft.TimeFixed -> {
                     Box(modifier = Modifier.weight(1f)) {
                         OutlinedTextField(
-                            value = rounds.duration.toString(),
+                            value = rounds.duration,
                             onValueChange = { v ->
-                                v.toIntOrNull()?.let { onChange(rounds.copy(duration = it)) }
+                                onChange(rounds.copy(duration = v))
                             },
                             label = { Text("Время (мин)") },
                             modifier = Modifier.fillMaxWidth()
@@ -117,30 +118,31 @@ fun RoundsEditor(
                 is RoundsDraft.TimeRange -> {
                     Box(modifier = Modifier.weight(1f)) {
                         OutlinedTextField(
-                            value = rounds.from.toString(),
+                            value = rounds.from,
                             onValueChange = { v ->
-                                v.toIntOrNull()?.let {
-                                    val updated = rounds.copy(from = it)
-                                    error = updated.from > updated.to
-                                    onChange(updated)
-                                }
+                                val updated = rounds.copy(from = v)
+                                error = updated.from.toIntOrNull()?.let { f ->
+                                    updated.to.toIntOrNull()?.let { t -> f > t }
+                                } ?: false
+                                onChange(updated)
                             },
                             label = { Text("От (мин)") },
                             isError = error,
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
+
                     Box(modifier = Modifier.weight(1f)) {
                         OutlinedTextField(
-                            value = rounds.to.toString(),
+                            value = rounds.to,
                             onValueChange = { v ->
-                                v.toIntOrNull()?.let {
-                                    val updated = rounds.copy(to = it)
-                                    error = updated.from > updated.to
-                                    onChange(updated)
-                                }
+                                val updated = rounds.copy(to = v)
+                                error = updated.from.toIntOrNull()?.let { f ->
+                                    updated.to.toIntOrNull()?.let { t -> f > t }
+                                } ?: false
+                                onChange(updated)
                             },
-                            label = { Text("До (сек)") },
+                            label = { Text("До (мин)") },
                             isError = error,
                             modifier = Modifier.fillMaxWidth()
                         )
@@ -149,7 +151,6 @@ fun RoundsEditor(
             }
         }
 
-        // --- Ошибка ---
         if (error) {
             Text(
                 text = "Значение 'От' должно быть ≤ 'До'",

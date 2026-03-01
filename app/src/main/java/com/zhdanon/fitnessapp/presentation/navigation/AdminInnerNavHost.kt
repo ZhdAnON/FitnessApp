@@ -104,11 +104,17 @@ fun AdminInnerNavHost(navController: NavHostController) {
             AdminCreateNutritionScreen(navController)
         }
         composable("nutrition") {
-            NutritionListScreen(navController = navController, isAdmin = true)
+            NutritionListScreen(
+                isAdmin = true,
+                onNutritionProgramClick = { id -> navController.navigate("nutrition/$id") }
+            )
         }
         composable("nutrition/{id}") { backStack ->
             val id = backStack.arguments?.getString("id")!!
-            NutritionDetailScreen(id, navController)
+            NutritionDetailScreen(
+                programId = id,
+                isAdmin = true
+            )
         }
     }
 }

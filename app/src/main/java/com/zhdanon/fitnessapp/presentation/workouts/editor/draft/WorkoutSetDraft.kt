@@ -6,7 +6,7 @@ data class WorkoutSetDraft(
     val localId: Long = System.nanoTime(),
     val order: Int = 0,
     val protocol: ProtocolType = ProtocolType.STANDARD,
-    val rounds: RoundsDraft = RoundsDraft.Fixed(1),
+    val rounds: RoundsDraft = RoundsDraft.Fixed(""),
     val exercises: List<WorkoutExerciseDraft> = emptyList(),
     val note: String = ""
 )

@@ -28,43 +28,38 @@ fun RepsEditor(
     var error by remember { mutableStateOf(false) }
 
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        // Тип выполнения
+        Box(modifier = Modifier.fillMaxWidth()) {
+            RepsTypeDropdown(
+                selected = type,
+                onSelected = { newType ->
+                    val newValue = when (newType) {
+                        RepsTypeUi.FIXED -> RepsDraft.Fixed("")
+                        RepsTypeUi.RANGE -> RepsDraft.Range("", "")
+                        RepsTypeUi.TIME_FIXED -> RepsDraft.TimeFixed("")
+                        RepsTypeUi.TIME_RANGE -> RepsDraft.TimeRange("", "")
+                        RepsTypeUi.MAX -> RepsDraft.None
+                    }
+                    error = false
+                    onChange(newValue)
+                }
+            )
+        }
 
-        // --- ОДНА СТРОКА: тип + значения ---
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-
-            // Тип выполнения
-            Box(modifier = Modifier.weight(1f)) {
-                RepsTypeDropdown(
-                    selected = type,
-                    onSelected = { newType ->
-                        val newValue = when (newType) {
-                            RepsTypeUi.FIXED -> RepsDraft.Fixed(1)
-                            RepsTypeUi.RANGE -> RepsDraft.Range(1, 2)
-                            RepsTypeUi.TIME_FIXED -> RepsDraft.TimeFixed(60)
-                            RepsTypeUi.TIME_RANGE -> RepsDraft.TimeRange(60, 120)
-                            RepsTypeUi.MAX -> RepsDraft.None
-                        }
-                        error = false
-                        onChange(newValue)
-                    }
-                )
-            }
-
-            // Значения (в зависимости от типа)
+            // Значения
             when (reps) {
 
                 is RepsDraft.Fixed -> {
                     Box(modifier = Modifier.weight(1f)) {
                         OutlinedTextField(
-                            value = reps.count.toString(),
+                            value = reps.count,
                             onValueChange = { v ->
-                                v.toIntOrNull()?.let {
-                                    onChange(reps.copy(count = it))
-                                }
+                                onChange(reps.copy(count = v))
                             },
                             label = { Text("Кол-во") },
                             modifier = Modifier.fillMaxWidth()
@@ -75,13 +70,13 @@ fun RepsEditor(
                 is RepsDraft.Range -> {
                     Box(modifier = Modifier.weight(1f)) {
                         OutlinedTextField(
-                            value = reps.from.toString(),
+                            value = reps.from,
                             onValueChange = { v ->
-                                v.toIntOrNull()?.let {
-                                    val updated = reps.copy(from = it)
-                                    error = updated.from > updated.to
-                                    onChange(updated)
-                                }
+                                val updated = reps.copy(from = v)
+                                error = updated.from.toIntOrNull()?.let { f ->
+                                    updated.to.toIntOrNull()?.let { t -> f > t }
+                                } ?: false
+                                onChange(updated)
                             },
                             label = { Text("От") },
                             isError = error,
@@ -91,13 +86,13 @@ fun RepsEditor(
 
                     Box(modifier = Modifier.weight(1f)) {
                         OutlinedTextField(
-                            value = reps.to.toString(),
+                            value = reps.to,
                             onValueChange = { v ->
-                                v.toIntOrNull()?.let {
-                                    val updated = reps.copy(to = it)
-                                    error = updated.from > updated.to
-                                    onChange(updated)
-                                }
+                                val updated = reps.copy(to = v)
+                                error = updated.from.toIntOrNull()?.let { f ->
+                                    updated.to.toIntOrNull()?.let { t -> f > t }
+                                } ?: false
+                                onChange(updated)
                             },
                             label = { Text("До") },
                             isError = error,
@@ -109,11 +104,9 @@ fun RepsEditor(
                 is RepsDraft.TimeFixed -> {
                     Box(modifier = Modifier.weight(1f)) {
                         OutlinedTextField(
-                            value = reps.duration.toString(),
+                            value = reps.duration,
                             onValueChange = { v ->
-                                v.toIntOrNull()?.let {
-                                    onChange(reps.copy(duration = it))
-                                }
+                                onChange(reps.copy(duration = v))
                             },
                             label = { Text("Сек") },
                             modifier = Modifier.fillMaxWidth()
@@ -124,13 +117,13 @@ fun RepsEditor(
                 is RepsDraft.TimeRange -> {
                     Box(modifier = Modifier.weight(1f)) {
                         OutlinedTextField(
-                            value = reps.from.toString(),
+                            value = reps.from,
                             onValueChange = { v ->
-                                v.toIntOrNull()?.let {
-                                    val updated = reps.copy(from = it)
-                                    error = updated.from > updated.to
-                                    onChange(updated)
-                                }
+                                val updated = reps.copy(from = v)
+                                error = updated.from.toIntOrNull()?.let { f ->
+                                    updated.to.toIntOrNull()?.let { t -> f > t }
+                                } ?: false
+                                onChange(updated)
                             },
                             label = { Text("От (сек)") },
                             isError = error,
@@ -140,13 +133,13 @@ fun RepsEditor(
 
                     Box(modifier = Modifier.weight(1f)) {
                         OutlinedTextField(
-                            value = reps.to.toString(),
+                            value = reps.to,
                             onValueChange = { v ->
-                                v.toIntOrNull()?.let {
-                                    val updated = reps.copy(to = it)
-                                    error = updated.from > updated.to
-                                    onChange(updated)
-                                }
+                                val updated = reps.copy(to = v)
+                                error = updated.from.toIntOrNull()?.let { f ->
+                                    updated.to.toIntOrNull()?.let { t -> f > t }
+                                } ?: false
+                                onChange(updated)
                             },
                             label = { Text("До (сек)") },
                             isError = error,
@@ -169,7 +162,6 @@ fun RepsEditor(
             }
         }
 
-        // --- Ошибка ---
         if (error) {
             Text(
                 text = "Значение 'От' должно быть ≤ 'До'",

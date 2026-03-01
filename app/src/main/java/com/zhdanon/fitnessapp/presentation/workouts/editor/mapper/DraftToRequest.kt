@@ -12,18 +12,46 @@ import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.WorkoutExercise
 import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.WorkoutSetDraft
 
 fun RoundsDraft.toRequest(): RoundsRequest = when (this) {
-    is RoundsDraft.Fixed -> RoundsRequest("Fixed", count = count)
-    is RoundsDraft.Range -> RoundsRequest("Range", from = from, to = to)
-    is RoundsDraft.TimeFixed -> RoundsRequest("TimeFixed", duration = duration)
-    is RoundsDraft.TimeRange -> RoundsRequest("TimeRange", from = from, to = to)
+    is RoundsDraft.Fixed -> RoundsRequest(
+        type = "Fixed",
+        count = count.toIntOrNull()
+    )
+    is RoundsDraft.Range -> RoundsRequest(
+        type = "Range",
+        from = from.toIntOrNull(),
+        to = to.toIntOrNull()
+    )
+    is RoundsDraft.TimeFixed -> RoundsRequest(
+        type = "TimeFixed",
+        duration = duration.toIntOrNull()
+    )
+    is RoundsDraft.TimeRange -> RoundsRequest(
+        type = "TimeRange",
+        from = from.toIntOrNull(),
+        to = to.toIntOrNull()
+    )
 }
 
 fun RepsDraft.toRequest(): RepsRequest = when (this) {
-    is RepsDraft.Fixed -> RepsRequest("Fixed", count = count)
-    is RepsDraft.Range -> RepsRequest("Range", from = from, to = to)
-    is RepsDraft.TimeFixed -> RepsRequest("TimeFixed", duration = duration)
-    is RepsDraft.TimeRange -> RepsRequest("TimeRange", from = from, to = to)
-    is RepsDraft.None -> RepsRequest("None")
+    is RepsDraft.Fixed -> RepsRequest(
+        type = "Fixed",
+        count = count.toIntOrNull()
+    )
+    is RepsDraft.Range -> RepsRequest(
+        type = "Range",
+        from = from.toIntOrNull(),
+        to = to.toIntOrNull()
+    )
+    is RepsDraft.TimeFixed -> RepsRequest(
+        type = "TimeFixed",
+        duration = duration.toIntOrNull()
+    )
+    is RepsDraft.TimeRange -> RepsRequest(
+        type = "TimeRange",
+        from = from.toIntOrNull(),
+        to = to.toIntOrNull()
+    )
+    is RepsDraft.None -> RepsRequest(type = "None")
 }
 
 fun WorkoutExerciseDraft.toRequest() =
