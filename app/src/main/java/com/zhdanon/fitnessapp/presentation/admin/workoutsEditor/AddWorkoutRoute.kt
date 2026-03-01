@@ -1,4 +1,4 @@
-package com.zhdanon.fitnessapp.presentation.workouts.editor
+package com.zhdanon.fitnessapp.presentation.admin.workoutsEditor
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold

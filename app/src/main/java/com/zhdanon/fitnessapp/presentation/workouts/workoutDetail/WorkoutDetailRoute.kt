@@ -9,7 +9,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun WorkoutDetailRoute(
     workoutId: String,
-    isAdmin: Boolean,
+    isAdmin: Boolean = false,
     workoutViewModel: WorkoutDetailViewModel = koinViewModel(),
     onEdit: (String) -> Unit,
     onExerciseClick: (String) -> Unit

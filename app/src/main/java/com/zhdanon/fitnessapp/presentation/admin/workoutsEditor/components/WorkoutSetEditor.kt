@@ -1,4 +1,4 @@
-package com.zhdanon.fitnessapp.presentation.workouts.editor.components
+package com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,8 +26,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.ExerciseUi
-import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.WorkoutSetDraft
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.draft.ExerciseUi
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.draft.WorkoutSetDraft
 
 @Composable
 fun WorkoutSetEditor(

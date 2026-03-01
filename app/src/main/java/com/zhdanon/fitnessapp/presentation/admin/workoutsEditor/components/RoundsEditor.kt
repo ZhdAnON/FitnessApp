@@ -1,4 +1,4 @@
-package com.zhdanon.fitnessapp.presentation.workouts.editor.components
+package com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,8 +16,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.RoundsDraft
-import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.RoundsTypeUi
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.draft.RoundsDraft
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.draft.RoundsTypeUi
 
 @Composable
 fun RoundsEditor(

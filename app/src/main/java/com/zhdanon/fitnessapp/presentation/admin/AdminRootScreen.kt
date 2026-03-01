@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Group
@@ -100,45 +99,12 @@ fun AdminRootScreen(
 
                         DropdownMenuItem(
                             leadingIcon = {
-                                Icon(Icons.Default.Add, contentDescription = null)
-                            },
-                            text = { Text("Создать тренировку") },
-                            onClick = {
-                                menuExpanded = false
-                                adminNavController.navigate("addWorkout")
-                            }
-                        )
-
-                        DropdownMenuItem(
-                            leadingIcon = {
-                                Icon(Icons.Default.FitnessCenter, contentDescription = null)
-                            },
-                            text = { Text("Создать упражнение") },
-                            onClick = {
-                                menuExpanded = false
-                                adminNavController.navigate("addExercise")
-                            }
-                        )
-
-                        DropdownMenuItem(
-                            leadingIcon = {
                                 Icon(Icons.Default.List, contentDescription = null)
                             },
                             text = { Text("Программы питания") },
                             onClick = {
                                 menuExpanded = false
                                 adminNavController.navigate("nutrition")
-                            }
-                        )
-
-                        DropdownMenuItem(
-                            leadingIcon = {
-                                Icon(Icons.Default.Add, contentDescription = null)
-                            },
-                            text = { Text("Создать программу питания") },
-                            onClick = {
-                                menuExpanded = false
-                                adminNavController.navigate("nutrition_create")
                             }
                         )
 

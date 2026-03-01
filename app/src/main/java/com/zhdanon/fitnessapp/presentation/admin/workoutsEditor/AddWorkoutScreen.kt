@@ -1,4 +1,4 @@
-package com.zhdanon.fitnessapp.presentation.workouts.editor
+package com.zhdanon.fitnessapp.presentation.admin.workoutsEditor
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,10 +23,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.zhdanon.fitnessapp.presentation.workouts.editor.components.WorkoutSetEditor
-import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.WorkoutUiState
-import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.WorkoutSetDraft
-
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.components.WorkoutSetEditor
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.draft.WorkoutSetDraft
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.draft.WorkoutUiState
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId

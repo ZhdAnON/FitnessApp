@@ -1,4 +1,4 @@
-package com.zhdanon.fitnessapp.presentation.workouts.editor
+package com.zhdanon.fitnessapp.presentation.admin.workoutsEditor
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,11 +9,11 @@ import com.zhdanon.fitnessapp.domain.models.workouts.Workout
 import com.zhdanon.fitnessapp.domain.usecases.workouts.GetExercisesUseCase
 import com.zhdanon.fitnessapp.domain.usecases.workouts.GetWorkoutUseCase
 import com.zhdanon.fitnessapp.domain.usecases.workouts.UpdateWorkoutUseCase
-import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.ExerciseUi
-import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.WorkoutSetDraft
-import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.WorkoutUiState
-import com.zhdanon.fitnessapp.presentation.workouts.editor.mapper.toDraftState
-import com.zhdanon.fitnessapp.presentation.workouts.editor.mapper.toRequest
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.draft.ExerciseUi
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.draft.WorkoutSetDraft
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.draft.WorkoutUiState
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.mapper.toDraftState
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.mapper.toRequest
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch

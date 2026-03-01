@@ -1,4 +1,4 @@
-package com.zhdanon.fitnessapp.presentation.workouts.editor.components
+package com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,8 +15,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.RepsDraft
-import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.WorkoutExerciseDraft
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.draft.RepsDraft
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.draft.WorkoutExerciseDraft
 
 @Composable
 fun ExerciseDialog(

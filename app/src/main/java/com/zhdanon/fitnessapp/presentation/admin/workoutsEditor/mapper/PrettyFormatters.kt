@@ -1,4 +1,4 @@
-package com.zhdanon.fitnessapp.presentation.workouts.editor.mapper
+package com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.mapper
 
 import com.zhdanon.fitnessapp.domain.models.workouts.Reps
 import com.zhdanon.fitnessapp.domain.models.workouts.Rounds

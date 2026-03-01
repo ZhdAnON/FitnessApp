@@ -1,4 +1,4 @@
-package com.zhdanon.fitnessapp.presentation.workouts.editor
+package com.zhdanon.fitnessapp.presentation.admin.workoutsEditor
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

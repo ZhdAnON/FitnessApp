@@ -1,15 +1,15 @@
-package com.zhdanon.fitnessapp.presentation.workouts.editor.mapper
+package com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.mapper
 
 import com.zhdanon.fitnessapp.data.dto.workouts.RepsRequest
 import com.zhdanon.fitnessapp.data.dto.workouts.RoundsRequest
 import com.zhdanon.fitnessapp.data.dto.workouts.SetExerciseRequest
 import com.zhdanon.fitnessapp.data.dto.workouts.WorkoutRequest
 import com.zhdanon.fitnessapp.data.dto.workouts.WorkoutSetRequest
-import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.WorkoutUiState
-import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.RepsDraft
-import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.RoundsDraft
-import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.WorkoutExerciseDraft
-import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.WorkoutSetDraft
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.draft.RepsDraft
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.draft.RoundsDraft
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.draft.WorkoutExerciseDraft
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.draft.WorkoutSetDraft
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.draft.WorkoutUiState
 
 fun RoundsDraft.toRequest(): RoundsRequest = when (this) {
     is RoundsDraft.Fixed -> RoundsRequest(

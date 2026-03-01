@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.zhdanon.fitnessapp.domain.models.workouts.Exercise
 import com.zhdanon.fitnessapp.domain.models.workouts.WorkoutExercise
-import com.zhdanon.fitnessapp.presentation.workouts.editor.mapper.toPrettyString
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.mapper.toPrettyString
 
 @Composable
 fun WorkoutExerciseRow(

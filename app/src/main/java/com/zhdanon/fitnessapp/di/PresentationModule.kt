@@ -2,7 +2,6 @@ package com.zhdanon.fitnessapp.di
 
 import androidx.lifecycle.SavedStateHandle
 import com.zhdanon.fitnessapp.presentation.user.UserViewModel
-import com.zhdanon.fitnessapp.presentation.workouts.editor.AddWorkoutViewModel
 import com.zhdanon.fitnessapp.presentation.admin.userslist.AdminUsersViewModel
 import com.zhdanon.fitnessapp.presentation.admin.addexercise.AddExerciseViewModel
 import com.zhdanon.fitnessapp.presentation.auth.AuthStateViewModel
@@ -13,7 +12,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import com.zhdanon.fitnessapp.presentation.auth.LoginViewModel
 import com.zhdanon.fitnessapp.presentation.nutrition.NutritionDetailViewModel
 import com.zhdanon.fitnessapp.presentation.nutrition.NutritionListViewModel
-import com.zhdanon.fitnessapp.presentation.workouts.editor.EditWorkoutViewModel
 import com.zhdanon.fitnessapp.presentation.workouts.exerciseDetail.ExerciseDetailViewModel
 import com.zhdanon.fitnessapp.presentation.workouts.workoutDetail.WorkoutDetailViewModel
 import com.zhdanon.fitnessapp.presentation.workouts.workoutsList.WorkoutViewModel
@@ -68,13 +66,13 @@ val presentationModule = module {
         )
     }
     viewModel {
-        AddWorkoutViewModel(
+        _root_ide_package_.com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.AddWorkoutViewModel(
             addWorkoutUseCase = get(),
             getExercisesUseCase = get()
         )
     }
     viewModel {
-        EditWorkoutViewModel(
+        _root_ide_package_.com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.EditWorkoutViewModel(
             getWorkoutUseCase = get(),
             updateWorkoutUseCase = get(),
             getExercisesUseCase = get()

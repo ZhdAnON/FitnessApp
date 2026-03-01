@@ -1,4 +1,4 @@
-package com.zhdanon.fitnessapp.presentation.workouts.editor.components
+package com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.DropdownMenuItem
@@ -13,7 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.RoundsTypeUi
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.draft.RoundsTypeUi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

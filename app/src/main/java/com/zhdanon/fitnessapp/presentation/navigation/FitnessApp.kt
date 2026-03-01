@@ -98,14 +98,12 @@ fun FitnessNavHost(startDestination: String) {
             arguments = listOf(navArgument("id") { type = NavType.StringType })
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id")!!
-            val isAdmin = startDestination == "admin"
-
             WorkoutDetailRoute(
                 workoutId = id,
                 onEdit = { id ->
                     navController.navigate("editWorkout/$id")
                 },
-                isAdmin = isAdmin,
+                isAdmin = false,
                 onExerciseClick = { exerciseId ->
                     navController.navigate("exercise/$exerciseId")
                 }

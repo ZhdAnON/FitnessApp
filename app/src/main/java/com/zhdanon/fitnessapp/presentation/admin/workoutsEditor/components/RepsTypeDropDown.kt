@@ -1,7 +1,6 @@
-package com.zhdanon.fitnessapp.presentation.workouts.editor.components
+package com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -14,7 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.zhdanon.fitnessapp.presentation.workouts.editor.draft.RepsTypeUi
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.draft.RepsTypeUi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -9,10 +9,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -22,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.zhdanon.fitnessapp.R
 import com.zhdanon.fitnessapp.presentation.background.BackgroundContainer
 import org.koin.compose.viewmodel.koinViewModel
@@ -31,6 +36,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun NutritionListScreen(
     viewModel: NutritionListViewModel = koinViewModel(),
     isAdmin: Boolean = false,
+    adminNavController: NavController? = null,
     onNutritionProgramClick: (String) -> Unit = {}
 ) {
     val programs = viewModel.programs
@@ -48,6 +54,15 @@ fun NutritionListScreen(
                         titleContentColor = Color.White
                     )
                 )
+            }
+        },
+        floatingActionButton = {
+            if (isAdmin) {
+                FloatingActionButton(
+                    onClick = { adminNavController?.navigate("nutrition_create") }
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Add nutrition program")
+                }
             }
         }
     ) { padding ->

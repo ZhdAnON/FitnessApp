@@ -1,7 +1,6 @@
 package com.zhdanon.fitnessapp.presentation.navigation
 
-import AdminCreateNutritionScreen
-import com.zhdanon.fitnessapp.presentation.workouts.editor.AddWorkoutRoute
+import com.zhdanon.fitnessapp.presentation.admin.nutrition.AdminCreateNutritionScreen
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
@@ -11,9 +10,10 @@ import androidx.navigation.compose.composable
 import com.zhdanon.fitnessapp.presentation.admin.AdminCalenderScreen
 import com.zhdanon.fitnessapp.presentation.admin.userslist.AdminUsersScreen
 import com.zhdanon.fitnessapp.presentation.admin.addexercise.AddExerciseRoute
-import com.zhdanon.fitnessapp.presentation.workouts.editor.EditWorkoutRoute
-import com.zhdanon.fitnessapp.presentation.workouts.editor.EditWorkoutViewModel
 import com.zhdanon.fitnessapp.presentation.admin.exercises.ExerciseListScreen
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.AddWorkoutRoute
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.EditWorkoutRoute
+import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.EditWorkoutViewModel
 import com.zhdanon.fitnessapp.presentation.nutrition.NutritionDetailScreen
 import com.zhdanon.fitnessapp.presentation.nutrition.NutritionListScreen
 import com.zhdanon.fitnessapp.presentation.workouts.exerciseDetail.ExerciseDetailScreen
@@ -73,10 +73,9 @@ fun AdminInnerNavHost(navController: NavHostController) {
 
         composable("workout/{id}") { backStack ->
             val id = backStack.arguments!!.getString("id")!!
-            val isAdmin = true
             WorkoutDetailRoute(
                 workoutId = id,
-                isAdmin = isAdmin,
+                isAdmin = true,
                 onEdit = { navController.navigate("editWorkout/$id") },
                 onExerciseClick = { exerciseId ->
                     navController.navigate("exercise/$exerciseId")
@@ -106,7 +105,8 @@ fun AdminInnerNavHost(navController: NavHostController) {
         composable("nutrition") {
             NutritionListScreen(
                 isAdmin = true,
-                onNutritionProgramClick = { id -> navController.navigate("nutrition/$id") }
+                onNutritionProgramClick = { id -> navController.navigate("nutrition/$id") },
+                adminNavController = navController
             )
         }
         composable("nutrition/{id}") { backStack ->

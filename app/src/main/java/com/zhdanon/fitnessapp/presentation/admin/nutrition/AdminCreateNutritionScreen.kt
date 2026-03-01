@@ -1,3 +1,5 @@
+package com.zhdanon.fitnessapp.presentation.admin.nutrition
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,16 +9,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -29,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.zhdanon.fitnessapp.R
 import com.zhdanon.fitnessapp.domain.models.nutrition.NutritionCategory
-import com.zhdanon.fitnessapp.presentation.admin.nutrition.CreateNutritionViewModel
 import com.zhdanon.fitnessapp.presentation.background.BackgroundContainer
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -40,25 +41,27 @@ fun AdminCreateNutritionScreen(
     viewModel: CreateNutritionViewModel = koinViewModel()
 ) {
     BackgroundContainer(backgroundRes = R.drawable.bg_nutrition) {
-        Scaffold(
-            containerColor = Color.Transparent,
-            topBar = {
-                TopAppBar(
-                    title = { Text("Создать программу питания") },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.Transparent,
-                        titleContentColor = Color.White
-                    )
-                )
-            }
-        ) { padding ->
-
+        Card(
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxSize(),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.White.copy(alpha = 0.9f)
+            )
+        ) {
             Column(
                 modifier = Modifier
-                    .padding(padding)
                     .padding(16.dp)
                     .fillMaxSize()
             ) {
+                // --- Новый заголовок ---
+                Text(
+                    text = "Новая программа питания",
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = Color.Black
+                )
+
+                Spacer(Modifier.height(16.dp))
 
                 var expanded by remember { mutableStateOf(false) }
 

@@ -1,5 +1,6 @@
 package com.zhdanon.fitnessapp.presentation.auth
 
+import android.util.Patterns
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -17,7 +18,12 @@ class LoginViewModel(
         private set
 
     fun onEmailChange(value: String) {
-        uiState = uiState.copy(email = value)
+        uiState = uiState.copy(
+            email = value,
+            error = if (value.isNotBlank() && !Patterns.EMAIL_ADDRESS.matcher(value).matches())
+                "Некорректный email"
+            else null
+        )
     }
 
     fun onPasswordChange(value: String) {

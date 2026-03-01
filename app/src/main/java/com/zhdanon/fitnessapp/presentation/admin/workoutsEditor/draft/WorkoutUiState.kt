@@ -1,4 +1,4 @@
-package com.zhdanon.fitnessapp.presentation.workouts.editor.draft
+package com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.draft
 
 import java.time.LocalDate
 
