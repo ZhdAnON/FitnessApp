@@ -23,18 +23,20 @@ class UserApiImpl(
     private val apiConfig: ApiConfig
 ) : UserApi {
 
-    override suspend fun getAllUsers(): List<UserDto> =
-        client.get {
+    override suspend fun getAllUsers(): List<UserDto> {
+        return client.get {
             url {
                 protocol = URLProtocol.HTTP
                 host = apiConfig.HOST
                 port = apiConfig.PORT
                 path("admin", "users")
             }
+            contentType(ContentType.Application.Json)
         }.body()
+    }
 
-    override suspend fun addUser(request: AddUserRequestDto): UserDto =
-        client.post {
+    override suspend fun addUser(request: AddUserRequestDto): UserDto {
+        return client.post {
             url {
                 protocol = URLProtocol.HTTP
                 host = apiConfig.HOST
@@ -44,6 +46,8 @@ class UserApiImpl(
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body()
+    }
+
 
     override suspend fun updateUserRole(userId: String, request: UpdateRoleRequestDto) {
         client.put {
@@ -59,7 +63,6 @@ class UserApiImpl(
     }
 
     override suspend fun updateUserPassword(userId: String, request: UpdatePasswordRequestDto) {
-        println("DEBUG: updateUserPassword → userId=$userId, body=$request")
         client.put {
             url {
                 protocol = URLProtocol.HTTP
@@ -73,7 +76,6 @@ class UserApiImpl(
     }
 
     override suspend fun changeOwnPassword(request: UpdatePasswordRequestDto) {
-        println("DEBUG: updateUserPassword → body=$request")
         client.put {
             url {
                 protocol = URLProtocol.HTTP

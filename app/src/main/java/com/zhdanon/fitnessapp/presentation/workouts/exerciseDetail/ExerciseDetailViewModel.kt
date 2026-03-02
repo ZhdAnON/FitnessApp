@@ -26,7 +26,6 @@ class ExerciseDetailViewModel(
     }
 
     private fun load() {
-        println("ExerciseDetailViewModel: id = $id")
         viewModelScope.launch {
             try {
                 exercise = exercisesUseCase(id)

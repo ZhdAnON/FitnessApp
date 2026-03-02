@@ -29,6 +29,7 @@ class ExerciseApiImpl(
                 port = apiConfig.PORT
                 path("/exercises")
             }
+            contentType(ContentType.Application.Json)
         }.body<List<ExerciseDto>>()
             .map { dto ->
                 Exercise(

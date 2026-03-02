@@ -31,7 +31,7 @@ class ExerciseListViewModel(
             isLoading = true
             error = null
             try {
-                exercises = getExerciseUseCase()
+                exercises = getExerciseUseCase().sortedBy { it.name }
             } catch (e: Exception) {
                 error = e.message
             } finally {

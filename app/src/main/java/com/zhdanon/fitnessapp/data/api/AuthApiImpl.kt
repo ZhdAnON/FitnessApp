@@ -60,15 +60,16 @@ class AuthApiImpl(
         }
     }
 
-    override suspend fun getProfile(): UserDto =
-        client.get {
+    override suspend fun getProfile(): UserDto {
+        return client.get {
             url {
                 protocol = URLProtocol.HTTP
                 host = apiConfig.HOST
                 port = apiConfig.PORT
-                path("user/profile")
+                path("user", "profile")
             }
         }.body()
+    }
 
     override suspend fun refresh(refreshToken: String): AuthResponseDto =
         client.post {

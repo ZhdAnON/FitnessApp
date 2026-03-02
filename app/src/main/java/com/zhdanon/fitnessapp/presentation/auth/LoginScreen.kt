@@ -39,7 +39,6 @@ fun LoginScreen(
         ) {
 
             // --- EMAIL ---
-            // --- PASSWORD ---
             OutlinedTextField(
                 value = state.email,
                 onValueChange = viewModel::onEmailChange,
@@ -63,6 +62,7 @@ fun LoginScreen(
 
             Spacer(Modifier.height(16.dp))
 
+            // --- PASSWORD ---
             OutlinedTextField(
                 value = state.password,
                 onValueChange = viewModel::onPasswordChange,

@@ -21,30 +21,40 @@ class AuthStateViewModel(
     var startDestination by mutableStateOf<String?>(null)
         private set
 
+    private var initialized = false
+
     init {
+        initialize()
+    }
+
+    private fun initialize() {
+        if (initialized) return
+        initialized = true
+
         viewModelScope.launch {
+            // 1. Ждём первый эмит токена из DataStore
             val savedToken = getSavedTokenUseCase().first()
 
+            // 2. Если токена нет — сразу на экран логина
             if (savedToken == null) {
                 startDestination = "login"
                 return@launch
             }
 
+            // 3. Пробуем обновить токен (refresh)
             val refreshed = autoLoginUseCase()
-
             if (!refreshed) {
                 startDestination = "login"
                 return@launch
             }
 
+            // 4. Пробуем получить профиль
             val user = runCatching { fetchProfileUseCase() }.getOrNull()
 
             startDestination = when (user?.role) {
                 UserRole.ADMIN -> "admin"
                 UserRole.USER -> "user"
-                else -> {
-                    "login"
-                }
+                else -> "login"
             }
         }
     }

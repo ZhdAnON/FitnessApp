@@ -2,6 +2,18 @@ package com.zhdanon.fitnessapp.domain.models.workouts
 
 sealed class MuscleCategory(val title: String, val muscles: List<Muscle>) {
 
+    object Chest : MuscleCategory(
+        "Грудь",
+        listOf(
+            Muscle("грудь"),
+            Muscle("верх груди"),
+            Muscle("средняя часть груди"),
+            Muscle("низ груди"),
+            Muscle("внутренняя часть груди"),
+            Muscle("внешняя часть груди")
+        )
+    )
+
     object Shoulders : MuscleCategory(
         "Плечи",
         listOf(
@@ -48,6 +60,7 @@ sealed class MuscleCategory(val title: String, val muscles: List<Muscle>) {
     object Core : MuscleCategory(
         "Кор",
         listOf(
+            Muscle("кор"),
             Muscle("прямая мышца живота"),
             Muscle("поперечная мышца живота"),
             Muscle("косые мышцы")
@@ -55,7 +68,7 @@ sealed class MuscleCategory(val title: String, val muscles: List<Muscle>) {
     )
 
     companion object {
-        val all = listOf(Shoulders, Arms, Back, Legs, Core)
+        val all = listOf(Chest, Shoulders, Arms, Back, Legs, Core)
     }
 }
 

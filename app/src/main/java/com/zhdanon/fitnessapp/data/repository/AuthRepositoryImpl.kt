@@ -33,7 +33,10 @@ class AuthRepositoryImpl(
     override suspend fun login(email: String, password: String): Pair<User, AuthToken> {
         val response = authApi.login(LoginRequestDto(email, password))
         val user = response.user.toDomain()
-        val token = AuthToken(response.accessToken, response.refreshToken)
+        val token = AuthToken(
+            accessToken = response.accessToken,
+            refreshToken = response.refreshToken
+        )
 
         tokenStorage.saveToken(token)
         currentUser = user
@@ -66,10 +69,15 @@ class AuthRepositoryImpl(
 
     override suspend fun refreshToken(): Boolean {
         val old = tokenStorage.getToken() ?: return false
+
         return try {
             val dto = authApi.refresh(old.refreshToken)
-
-            tokenStorage.saveToken(AuthToken(dto.accessToken, dto.refreshToken))
+            tokenStorage.saveToken(
+                AuthToken(
+                    accessToken = dto.accessToken,
+                    refreshToken = dto.refreshToken
+                )
+            )
             true
         } catch (e: Exception) {
             false
