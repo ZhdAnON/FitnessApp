@@ -69,6 +69,12 @@ sealed class MuscleCategory(val title: String, val muscles: List<Muscle>) {
 
     companion object {
         val all = listOf(Chest, Shoulders, Arms, Back, Legs, Core)
+
+        fun fromTitle(title: String): Muscle {
+            return all
+                .flatMap { it.muscles }
+                .first { it.title == title }
+        }
     }
 }
 

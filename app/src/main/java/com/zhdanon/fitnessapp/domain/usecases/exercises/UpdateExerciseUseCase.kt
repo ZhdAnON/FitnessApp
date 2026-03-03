@@ -4,8 +4,10 @@ import com.zhdanon.fitnessapp.data.dto.workouts.ExerciseRequest
 import com.zhdanon.fitnessapp.domain.models.workouts.Exercise
 import com.zhdanon.fitnessapp.domain.repositories.ExerciseRepository
 
-class AddExerciseUseCase(private val exerciseRep: ExerciseRepository) {
-    suspend operator fun invoke(exercise: ExerciseRequest): Exercise {
-        return exerciseRep.createExercise(exercise)
+class UpdateExerciseUseCase(
+    private val repo: ExerciseRepository
+) {
+    suspend operator fun invoke(id: String, request: ExerciseRequest): Exercise {
+        return repo.updateExercise(id, request)
     }
 }

@@ -23,8 +23,11 @@ import com.zhdanon.fitnessapp.presentation.auth.LoginScreen
 import com.zhdanon.fitnessapp.presentation.nutrition.NutritionDetailScreen
 import com.zhdanon.fitnessapp.presentation.nutrition.NutritionListScreen
 import com.zhdanon.fitnessapp.presentation.user.UserRootScreen
+import com.zhdanon.fitnessapp.presentation.workouts.exerciseDetail.ExerciseDetailScreen
+import com.zhdanon.fitnessapp.presentation.workouts.exerciseDetail.ExerciseDetailViewModel
 import com.zhdanon.fitnessapp.presentation.workouts.workoutDetail.WorkoutDetailRoute
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -132,6 +135,24 @@ fun FitnessNavHost(startDestination: String) {
             SecureScreen {
                 NutritionDetailScreen(
                     programId = id,
+                    isAdmin = false
+                )
+            }
+        }
+
+        composable(
+            route = "exercise/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments!!.getString("id")!!
+
+            val viewModel: ExerciseDetailViewModel = koinViewModel(
+                parameters = { parametersOf(id) }
+            )
+
+            SecureScreen {
+                ExerciseDetailScreen(
+                    viewModel = viewModel,
                     isAdmin = false
                 )
             }

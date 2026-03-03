@@ -10,6 +10,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.post
+import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.URLProtocol
@@ -29,34 +30,23 @@ class ExerciseApiImpl(
                 port = apiConfig.PORT
                 path("/exercises")
             }
-            contentType(ContentType.Application.Json)
         }.body<List<ExerciseDto>>()
-            .map { dto ->
-                Exercise(
-                    id = dto.id,
-                    name = dto.name,
-                    muscleGroups = dto.muscleGroups,
-                    technique = dto.technique,
-                    videoUrl = dto.videoUrl
-                )
-            }
+            .map { it.toDomain() }
     }
 
     override suspend fun getExerciseById(id: String): Exercise {
-        val dto = client.get {
+        return client.get {
             url {
                 protocol = URLProtocol.HTTP
                 host = apiConfig.HOST
                 port = apiConfig.PORT
                 path("/exercises", id)
             }
-        }.body<ExerciseDto>()
-        return dto.toDomain()
+        }.body<ExerciseDto>().toDomain()
     }
 
-
     override suspend fun createExercise(exercise: ExerciseRequest): Exercise {
-        val dto = client.post {
+        return client.post {
             url {
                 protocol = URLProtocol.HTTP
                 host = apiConfig.HOST
@@ -65,14 +55,21 @@ class ExerciseApiImpl(
             }
             contentType(ContentType.Application.Json)
             setBody(exercise)
+        }.body<ExerciseDto>().toDomain()
+    }
+
+    override suspend fun updateExercise(id: String, request: ExerciseRequest): Exercise {
+        val dto = client.put {
+            url {
+                protocol = URLProtocol.HTTP
+                host = apiConfig.HOST
+                port = apiConfig.PORT
+                path("/exercises", id)
+            }
+            contentType(ContentType.Application.Json)
+            setBody(request)
         }.body<ExerciseDto>()
 
-        return Exercise(
-            id = dto.id,
-            name = dto.name,
-            muscleGroups = dto.muscleGroups,
-            technique = dto.technique,
-            videoUrl = dto.videoUrl
-        )
+        return dto.toDomain()
     }
 }

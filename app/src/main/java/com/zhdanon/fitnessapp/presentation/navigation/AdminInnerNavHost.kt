@@ -10,6 +10,8 @@ import androidx.navigation.compose.composable
 import com.zhdanon.fitnessapp.presentation.admin.calender.AdminCalenderScreen
 import com.zhdanon.fitnessapp.presentation.admin.userslist.AdminUsersScreen
 import com.zhdanon.fitnessapp.presentation.admin.addexercise.AddExerciseRoute
+import com.zhdanon.fitnessapp.presentation.admin.addexercise.EditExerciseRoute
+import com.zhdanon.fitnessapp.presentation.admin.addexercise.EditExerciseViewModel
 import com.zhdanon.fitnessapp.presentation.admin.exercises.ExerciseListScreen
 import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.AddWorkoutRoute
 import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.EditWorkoutRoute
@@ -60,11 +62,30 @@ fun AdminInnerNavHost(navController: NavHostController) {
         }
 
         composable("exercise/{id}") { backStack ->
+            val id = backStack.arguments!!.getString("id")!!
+
             val viewModel: ExerciseDetailViewModel = koinViewModel(
-                parameters = { parametersOf(backStack.savedStateHandle) }
+                parameters = { parametersOf(id) }
             )
 
-            ExerciseDetailScreen(viewModel = viewModel)
+            ExerciseDetailScreen(
+                viewModel = viewModel,
+                isAdmin = true,
+                onEdit = { navController.navigate("exercise_edit/$id") }
+            )
+        }
+
+        composable("exercise_edit/{exerciseId}") { backStack ->
+            val exerciseId = backStack.arguments!!.getString("exerciseId")!!
+
+            val viewModel: EditExerciseViewModel = koinViewModel(
+                parameters = { parametersOf(exerciseId) }
+            )
+
+            EditExerciseRoute(
+                navController = navController,
+                viewModel = viewModel
+            )
         }
 
         composable("users") {

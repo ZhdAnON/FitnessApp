@@ -22,6 +22,7 @@ import com.zhdanon.fitnessapp.domain.repositories.WorkoutRepository
 import com.zhdanon.fitnessapp.domain.repositories.UserRepository
 import com.zhdanon.fitnessapp.domain.api.ApiConfig
 import com.zhdanon.fitnessapp.domain.api.NutritionApi
+import com.zhdanon.fitnessapp.domain.repositories.ExerciseRepository
 import com.zhdanon.fitnessapp.domain.repositories.NutritionRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
@@ -135,7 +136,7 @@ val networkModule = module {
             executor = get()
         )
     }
-    single<ExerciseRepositoryImpl> {
+    single<ExerciseRepository> {
         ExerciseRepositoryImpl(
             exerciseApi = get(),
             executor = get()

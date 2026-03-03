@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.zhdanon.fitnessapp.presentation.user.UserViewModel
 import com.zhdanon.fitnessapp.presentation.admin.userslist.AdminUsersViewModel
 import com.zhdanon.fitnessapp.presentation.admin.addexercise.AddExerciseViewModel
+import com.zhdanon.fitnessapp.presentation.admin.addexercise.EditExerciseViewModel
 import com.zhdanon.fitnessapp.presentation.auth.AuthStateViewModel
 import com.zhdanon.fitnessapp.presentation.auth.AuthViewModel
 import com.zhdanon.fitnessapp.presentation.admin.exercises.ExerciseListViewModel
@@ -83,6 +84,13 @@ val presentationModule = module {
         ExerciseDetailViewModel(
             exercisesUseCase = get(),
             savedStateHandle = handle
+        )
+    }
+    viewModel { (exerciseId: String) ->
+        EditExerciseViewModel(
+            getExerciseUseCase = get(),
+            updateExerciseUseCase = get(),
+            savedStateHandle = SavedStateHandle(mapOf("exerciseId" to exerciseId))
         )
     }
 

@@ -7,20 +7,20 @@ import androidx.navigation.NavHostController
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun AddExerciseRoute(
+fun EditExerciseRoute(
     navController: NavHostController,
-    viewModel: AddExerciseViewModel = koinViewModel()
+    viewModel: EditExerciseViewModel = koinViewModel()
 ) {
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
-            if (event is AddExerciseViewModel.AddExerciseEvent.Saved) {
+            if (event is EditExerciseViewModel.EditExerciseEvent.Saved) {
                 navController.popBackStack()
             }
         }
     }
 
     ExerciseEditorScreen(
-        isEditMode = false,
+        isEditMode = true,
         onSaved = { navController.popBackStack() },
         name = viewModel.name,
         onNameChange = { viewModel.name = it },

@@ -7,4 +7,5 @@ interface ExerciseApi {
     suspend fun getExercises(): List<Exercise>
     suspend fun getExerciseById(id: String): Exercise
     suspend fun createExercise(exercise: ExerciseRequest): Exercise
+    suspend fun updateExercise(id: String, request: ExerciseRequest): Exercise
 }

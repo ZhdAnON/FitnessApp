@@ -19,4 +19,7 @@ class ExerciseRepositoryImpl(
 
     override suspend fun createExercise(exercise: ExerciseRequest): Exercise =
         executor.execute { exerciseApi.createExercise(exercise) }!!
+
+    override suspend fun updateExercise(id: String, request: ExerciseRequest): Exercise =
+        executor.execute { exerciseApi.updateExercise(id, request) }!!
 }

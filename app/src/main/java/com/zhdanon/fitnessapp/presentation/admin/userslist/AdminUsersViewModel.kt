@@ -45,7 +45,7 @@ class AdminUsersViewModel(
         viewModelScope.launch {
             uiState = uiState.copy(isLoading = true)
             try {
-                val users = getAllUsersUseCase()
+                val users = getAllUsersUseCase().sortedBy { it.role }
                 uiState = uiState.copy(users = users, error = null)
             } catch (e: Exception) {
                 uiState = uiState.copy(error = e.message)

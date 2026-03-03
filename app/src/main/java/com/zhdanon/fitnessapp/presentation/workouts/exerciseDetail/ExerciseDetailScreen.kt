@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,7 +16,9 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ExerciseDetailScreen(
-    viewModel: ExerciseDetailViewModel = koinViewModel()
+    viewModel: ExerciseDetailViewModel = koinViewModel(),
+    isAdmin: Boolean = false,
+    onEdit: () -> Unit = {}
 ) {
     val exercise = viewModel.exercise
     val isLoading = viewModel.isLoading
@@ -28,14 +31,15 @@ fun ExerciseDetailScreen(
     ) {
         when {
             isLoading -> CircularProgressIndicator()
-
             error != null -> Text("Ошибка: $error")
-
             exercise != null -> {
-                Text(
-                    exercise.name,
-                    style = MaterialTheme.typography.headlineSmall
-                )
+                Text(exercise.name, style = MaterialTheme.typography.headlineSmall)
+
+                if (isAdmin) {
+                    Button(onClick = onEdit) {
+                        Text("Редактировать")
+                    }
+                }
 
                 Spacer(Modifier.height(16.dp))
 
