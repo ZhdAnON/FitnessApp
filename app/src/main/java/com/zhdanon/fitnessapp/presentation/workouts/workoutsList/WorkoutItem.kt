@@ -1,13 +1,11 @@
 package com.zhdanon.fitnessapp.presentation.workouts.workoutsList
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -63,20 +61,21 @@ fun WorkoutItem(
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-
-            Column(
-                modifier = Modifier.weight(1f)
+            Row(
+                modifier = Modifier.weight(1f),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = workout.title,
+                    modifier = Modifier.alignByBaseline(),
                     style = MaterialTheme.typography.titleMedium
                 )
-                Spacer(Modifier.height(4.dp))
+                Spacer(Modifier.width(4.dp))
                 Text(
                     text = workout.date.toString(),
+                    modifier = Modifier.alignByBaseline(),
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -87,9 +86,7 @@ fun WorkoutItem(
                     color = Color.Red,
                     modifier = Modifier
                         .padding(start = 12.dp)
-                        .clickable {
-                            showDialog = true
-                        }
+                        .clickable { showDialog = true }
                 )
             }
         }

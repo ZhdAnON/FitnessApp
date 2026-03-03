@@ -5,9 +5,14 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -37,8 +42,8 @@ import androidx.compose.ui.unit.sp
 import com.zhdanon.fitnessapp.R
 import com.zhdanon.fitnessapp.presentation.auth.AuthViewModel
 import com.zhdanon.fitnessapp.presentation.background.BackgroundContainer
+import com.zhdanon.fitnessapp.presentation.workouts.workoutsList.WorkoutItem
 import com.zhdanon.fitnessapp.presentation.workouts.workoutsList.calender.WorkoutCalendar
-import com.zhdanon.fitnessapp.presentation.workouts.workoutsList.WorkoutsList
 import org.koin.compose.viewmodel.koinViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -157,12 +162,28 @@ fun UserRootScreen(
                                 )
                             }
                         } else {
-                            WorkoutsList(
-                                workouts = workouts,
-                                isAdmin = false,
-                                onClick = onWorkoutClick,
-                                onDelete = { }
-                            )
+                            LazyColumn(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f),
+                                contentPadding = PaddingValues(8.dp)
+                            ) {
+                                items(workouts) { workout ->
+                                    WorkoutItem(
+                                        workout = workout,
+                                        isAdmin = false,
+                                        onClick = onWorkoutClick,
+                                        onDelete = {}
+                                    )
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                }
+                            }
+//                            WorkoutsList(
+//                                workouts = workouts,
+//                                isAdmin = false,
+//                                onClick = onWorkoutClick,
+//                                onDelete = { }
+//                            )
                         }
                     }
                 }

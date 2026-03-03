@@ -43,32 +43,30 @@ fun NutritionListScreen(
     val isLoading = viewModel.isLoading
     val error = viewModel.error
 
-    Scaffold(
-        containerColor = Color.Transparent,
-        topBar = {
-            if (!isAdmin) {
-                TopAppBar(
-                    title = { Text("Программы питания") },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.Transparent,
-                        titleContentColor = Color.White
+    BackgroundContainer(backgroundRes = R.drawable.bg_nutrition) {
+        Scaffold(
+            containerColor = Color.Transparent,
+            topBar = {
+                if (!isAdmin) {
+                    TopAppBar(
+                        title = { Text("Программы питания") },
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = Color.Transparent,
+                            titleContentColor = Color.White
+                        )
                     )
-                )
-            }
-        },
-        floatingActionButton = {
-            if (isAdmin) {
-                FloatingActionButton(
-                    onClick = { adminNavController?.navigate("nutrition_create") }
-                ) {
-                    Icon(Icons.Default.Add, contentDescription = "Add nutrition program")
+                }
+            },
+            floatingActionButton = {
+                if (isAdmin) {
+                    FloatingActionButton(
+                        onClick = { adminNavController?.navigate("nutrition_create") }
+                    ) {
+                        Icon(Icons.Default.Add, contentDescription = "Add nutrition program")
+                    }
                 }
             }
-        }
-    ) { padding ->
-
-        BackgroundContainer(backgroundRes = R.drawable.bg_nutrition) {
-
+        ) { padding ->
             when {
                 isLoading -> CircularProgressIndicator()
                 error != null -> Text("Ошибка: $error", color = Color.White)
@@ -78,8 +76,7 @@ fun NutritionListScreen(
                         .padding(
                             top = if (isAdmin) 0.dp else padding.calculateTopPadding(),
                             start = padding.calculateStartPadding(LayoutDirection.Ltr),
-                            end = padding.calculateEndPadding(LayoutDirection.Ltr),
-                            bottom = padding.calculateBottomPadding()
+                            end = padding.calculateEndPadding(LayoutDirection.Ltr)
                         )
                         .padding(8.dp)
                         .fillMaxSize(),
@@ -87,7 +84,11 @@ fun NutritionListScreen(
                         containerColor = Color.White.copy(alpha = 0.9f)
                     )
                 ) {
-                    LazyColumn(Modifier.padding(8.dp)) {
+                    LazyColumn(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .fillMaxSize()
+                    ) {
                         items(programs) { program ->
                             Column(
                                 Modifier

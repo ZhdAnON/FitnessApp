@@ -43,23 +43,21 @@ fun NutritionDetailScreen(
         viewModel.loadProgram(programId)
     }
 
-    Scaffold(
-        containerColor = Color.Transparent,
-        topBar = {
-            if (!isAdmin) {
-                TopAppBar(
-                    title = { Text(program?.category?.title ?: "Программа") },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.Transparent,
-                        titleContentColor = Color.White
+    BackgroundContainer(backgroundRes = R.drawable.bg_nutrition) {
+        Scaffold(
+            containerColor = Color.Transparent,
+            topBar = {
+                if (!isAdmin) {
+                    TopAppBar(
+                        title = { Text(program?.category?.title ?: "Программа") },
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = Color.Transparent,
+                            titleContentColor = Color.White
+                        )
                     )
-                )
+                }
             }
-        }
-    ) { padding ->
-
-        BackgroundContainer(backgroundRes = R.drawable.bg_nutrition) {
-
+        ) { padding ->
             when {
                 isLoading -> CircularProgressIndicator()
                 error != null -> Text("Ошибка: $error", color = Color.White)
@@ -69,8 +67,7 @@ fun NutritionDetailScreen(
                         .padding(
                             top = if (isAdmin) 0.dp else padding.calculateTopPadding(),
                             start = padding.calculateStartPadding(LayoutDirection.Ltr),
-                            end = padding.calculateEndPadding(LayoutDirection.Ltr),
-                            bottom = padding.calculateBottomPadding()
+                            end = padding.calculateEndPadding(LayoutDirection.Ltr)
                         )
                         .padding(8.dp)
                         .fillMaxSize(),
