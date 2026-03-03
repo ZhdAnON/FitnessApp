@@ -1,4 +1,4 @@
-package com.zhdanon.fitnessapp.presentation.workouts.workoutsList.components
+package com.zhdanon.fitnessapp.presentation.workouts.workoutsList
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

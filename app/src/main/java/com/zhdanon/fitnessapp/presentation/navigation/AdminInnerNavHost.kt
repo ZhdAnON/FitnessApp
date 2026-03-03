@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.zhdanon.fitnessapp.presentation.admin.AdminCalenderScreen
+import com.zhdanon.fitnessapp.presentation.admin.calender.AdminCalenderScreen
 import com.zhdanon.fitnessapp.presentation.admin.userslist.AdminUsersScreen
 import com.zhdanon.fitnessapp.presentation.admin.addexercise.AddExerciseRoute
 import com.zhdanon.fitnessapp.presentation.admin.exercises.ExerciseListScreen

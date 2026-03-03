@@ -1,4 +1,4 @@
-package com.zhdanon.fitnessapp.presentation.workouts.workoutsList.components
+package com.zhdanon.fitnessapp.presentation.workouts.workoutsList
 
 import com.zhdanon.fitnessapp.domain.models.workouts.Workout
 

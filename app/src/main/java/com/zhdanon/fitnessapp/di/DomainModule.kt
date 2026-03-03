@@ -16,7 +16,6 @@ import com.zhdanon.fitnessapp.domain.usecases.auth.GetSavedTokenUseCase
 import com.zhdanon.fitnessapp.domain.usecases.workouts.GetWorkoutUseCase
 import com.zhdanon.fitnessapp.domain.usecases.auth.LoginUseCase
 import com.zhdanon.fitnessapp.domain.usecases.auth.LogoutUseCase
-import com.zhdanon.fitnessapp.domain.usecases.workouts.ToggleFavoriteWorkoutUseCase
 import com.zhdanon.fitnessapp.domain.usecases.workouts.UpdateWorkoutUseCase
 import com.zhdanon.fitnessapp.domain.usecases.auth.UpdateUserPasswordUseCase
 import com.zhdanon.fitnessapp.domain.usecases.auth.UpdateUserRoleUseCase
@@ -50,7 +49,6 @@ val domainModule = module {
     factory { DeleteWorkoutUseCase(get()) }
     factory { GetAllWorkoutsUseCase(get()) }
     factory { GetWorkoutUseCase(get()) }
-    factory { ToggleFavoriteWorkoutUseCase(get()) }
     factory { UpdateWorkoutUseCase(get()) }
 
     // Exercises

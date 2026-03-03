@@ -10,5 +10,4 @@ interface WorkoutRepository {
     suspend fun addWorkout(workout: WorkoutRequest): CreatedWorkoutResponse
     suspend fun updateWorkout(id: String, workout: WorkoutRequest): Workout
     suspend fun deleteWorkout(id: String)
-    suspend fun toggleFavorite(workoutId: String): Workout
 }

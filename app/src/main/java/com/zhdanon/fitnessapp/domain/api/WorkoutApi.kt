@@ -10,5 +10,4 @@ interface WorkoutApi {
     suspend fun addWorkout(request: WorkoutRequest): CreatedWorkoutResponse
     suspend fun updateWorkout(id: String, request: WorkoutRequest): WorkoutDto
     suspend fun deleteWorkout(id: String)
-    suspend fun toggleFavorite(id: String): WorkoutDto
 }

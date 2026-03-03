@@ -1,4 +1,4 @@
-package com.zhdanon.fitnessapp.presentation.workouts.workoutsList
+package com.zhdanon.fitnessapp.presentation.admin.calender
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,14 +8,12 @@ import androidx.lifecycle.viewModelScope
 import com.zhdanon.fitnessapp.domain.models.workouts.Workout
 import com.zhdanon.fitnessapp.domain.usecases.workouts.DeleteWorkoutUseCase
 import com.zhdanon.fitnessapp.domain.usecases.workouts.GetAllWorkoutsUseCase
-import com.zhdanon.fitnessapp.domain.usecases.workouts.ToggleFavoriteWorkoutUseCase
-import com.zhdanon.fitnessapp.presentation.workouts.workoutsList.components.WorkoutsUiState
+import com.zhdanon.fitnessapp.presentation.workouts.workoutsList.WorkoutsUiState
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-class WorkoutViewModel(
+class AdminCalenderViewModel(
     private val getAllWorkoutsUseCase: GetAllWorkoutsUseCase,
-    private val toggleFavoriteUseCase: ToggleFavoriteWorkoutUseCase,
     private val deleteWorkoutUseCase: DeleteWorkoutUseCase
 ) : ViewModel() {
     var uiState by mutableStateOf(WorkoutsUiState())
@@ -36,11 +34,12 @@ class WorkoutViewModel(
 
     fun loadWorkouts() {
         viewModelScope.launch {
-            uiState = uiState.copy(isLoading = true)
-
             try {
                 val workouts = getAllWorkoutsUseCase()
                 uiState = uiState.copy(workouts = workouts, error = null)
+                if (selectedDate == null) {
+                    selectedDate = LocalDate.now()
+                }
 
             } catch (e: Exception) {
                 uiState = uiState.copy(error = e.message)
@@ -59,17 +58,6 @@ class WorkoutViewModel(
         viewModelScope.launch {
             try {
                 deleteWorkoutUseCase(id)
-                loadWorkouts()
-            } catch (e: Exception) {
-                uiState = uiState.copy(error = e.message)
-            }
-        }
-    }
-
-    fun toggleFavorite(id: String) {
-        viewModelScope.launch {
-            try {
-                toggleFavoriteUseCase(id)
                 loadWorkouts()
             } catch (e: Exception) {
                 uiState = uiState.copy(error = e.message)

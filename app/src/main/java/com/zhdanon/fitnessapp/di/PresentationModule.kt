@@ -14,7 +14,7 @@ import com.zhdanon.fitnessapp.presentation.nutrition.NutritionDetailViewModel
 import com.zhdanon.fitnessapp.presentation.nutrition.NutritionListViewModel
 import com.zhdanon.fitnessapp.presentation.workouts.exerciseDetail.ExerciseDetailViewModel
 import com.zhdanon.fitnessapp.presentation.workouts.workoutDetail.WorkoutDetailViewModel
-import com.zhdanon.fitnessapp.presentation.workouts.workoutsList.WorkoutViewModel
+import com.zhdanon.fitnessapp.presentation.admin.calender.AdminCalenderViewModel
 import org.koin.dsl.module
 
 val presentationModule = module {
@@ -53,9 +53,8 @@ val presentationModule = module {
         )
     }
     viewModel {
-        WorkoutViewModel(
+        AdminCalenderViewModel(
             getAllWorkoutsUseCase = get(),
-            toggleFavoriteUseCase = get(),
             deleteWorkoutUseCase = get()
         )
     }

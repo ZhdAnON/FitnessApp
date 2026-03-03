@@ -34,8 +34,4 @@ class WorkoutRepositoryImpl(
     override suspend fun deleteWorkout(id: String) {
         executor.execute { workoutApi.deleteWorkout(id) }
     }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun toggleFavorite(workoutId: String): Workout =
-        executor.execute { workoutApi.toggleFavorite(workoutId) }!!.toDomain()
 }

@@ -82,7 +82,4 @@ class WorkoutApiImpl(
             }
         }
     }
-
-    override suspend fun toggleFavorite(id: String): WorkoutDto =
-        client.post("/workout/$id/favorite").body()
 }

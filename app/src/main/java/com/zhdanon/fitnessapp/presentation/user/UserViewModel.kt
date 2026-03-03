@@ -37,6 +37,9 @@ class UserViewModel (
             try {
                 val workouts = getAllWorkoutsUseCase()
                 uiState = uiState.copy(workouts = workouts, error = null)
+                if (selectedDate == null) {
+                    selectedDate = LocalDate.now()
+                }
 
             } catch (e: Exception) {
                 uiState = uiState.copy(error = e.message)

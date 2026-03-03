@@ -1,10 +1,11 @@
-package com.zhdanon.fitnessapp.presentation.admin
+package com.zhdanon.fitnessapp.presentation.admin.calender
 
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
@@ -20,21 +21,23 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.NavController
 import com.zhdanon.fitnessapp.R
 import com.zhdanon.fitnessapp.presentation.background.BackgroundContainer
-import com.zhdanon.fitnessapp.presentation.workouts.workoutsList.components.WorkoutCalendar
-import com.zhdanon.fitnessapp.presentation.workouts.workoutsList.components.WorkoutsList
-import com.zhdanon.fitnessapp.presentation.workouts.workoutsList.WorkoutViewModel
+import com.zhdanon.fitnessapp.presentation.workouts.workoutsList.calender.WorkoutCalendar
+import com.zhdanon.fitnessapp.presentation.workouts.workoutsList.WorkoutsList
 import org.koin.compose.viewmodel.koinViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AdminCalenderScreen(
     navController: NavController,
-    workoutViewModel: WorkoutViewModel = koinViewModel(),
+    workoutViewModel: AdminCalenderViewModel = koinViewModel(),
     onWorkoutClick: (String) -> Unit = {}
 ) {
     val state = workoutViewModel.uiState
@@ -88,11 +91,26 @@ fun AdminCalenderScreen(
                         val workouts = workoutViewModel.workoutsOfSelectedDate
 
                         if (workouts.isEmpty()) {
-                            Text(
-                                text = "Выходной",
-                                modifier = Modifier.padding(16.dp),
-                                color = Color.Gray
-                            )
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = Color.White.copy(alpha = 0.85f)
+                                ),
+                                shape = RoundedCornerShape(12.dp)
+                            ) {
+                                Text(
+                                    text = "В этот день выходной",
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                    color = Color.Black,
+                                    textAlign = TextAlign.Center,
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
                         } else {
                             WorkoutsList(
                                 workouts = workouts,
