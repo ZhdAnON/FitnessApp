@@ -4,6 +4,7 @@ import com.zhdanon.fitnessapp.presentation.admin.nutrition.AdminCreateNutritionS
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -13,6 +14,7 @@ import com.zhdanon.fitnessapp.presentation.admin.addexercise.AddExerciseRoute
 import com.zhdanon.fitnessapp.presentation.admin.addexercise.EditExerciseRoute
 import com.zhdanon.fitnessapp.presentation.admin.addexercise.EditExerciseViewModel
 import com.zhdanon.fitnessapp.presentation.admin.exercises.ExerciseListScreen
+import com.zhdanon.fitnessapp.presentation.admin.exercises.ExerciseListViewModel
 import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.AddWorkoutRoute
 import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.EditWorkoutRoute
 import com.zhdanon.fitnessapp.presentation.admin.workoutsEditor.EditWorkoutViewModel
@@ -54,24 +56,66 @@ fun AdminInnerNavHost(navController: NavHostController) {
             AddExerciseRoute(navController)
         }
 
-        composable("exercises") {
+        composable("exercises") { backStackEntry ->
+            val viewModel: ExerciseListViewModel = koinViewModel()
+
+            val savedStateHandle = backStackEntry.savedStateHandle
+
+            LaunchedEffect(Unit) {
+                savedStateHandle.getLiveData<Boolean>("exercise_created")
+                    .observe(backStackEntry) { created ->
+                        if (created == true) {
+                            viewModel.loadExercises()
+                            savedStateHandle["exercise_created"] = false
+                        }
+                    }
+            }
+            LaunchedEffect(Unit) {
+                savedStateHandle.getLiveData<Boolean>("exercise_deleted")
+                    .observe(backStackEntry) { deleted ->
+                        if (deleted == true) {
+                            viewModel.loadExercises()
+                            savedStateHandle["exercise_deleted"] = false
+                        }
+                    }
+            }
+
             ExerciseListScreen(
                 navController = navController,
-                onAddExercise = { navController.navigate("addExercise") }
+                onAddExercise = { navController.navigate("addExercise") },
+                viewModel = viewModel
             )
         }
 
-        composable("exercise/{id}") { backStack ->
-            val id = backStack.arguments!!.getString("id")!!
+        composable("exercise/{id}") { backStackEntry ->
+            val id = backStackEntry.arguments!!.getString("id")!!
 
             val viewModel: ExerciseDetailViewModel = koinViewModel(
                 parameters = { parametersOf(id) }
             )
 
+            // Слушаем флаг обновления
+            val savedStateHandle = backStackEntry.savedStateHandle
+            LaunchedEffect(Unit) {
+                savedStateHandle.getLiveData<Boolean>("exercise_updated")
+                    .observe(backStackEntry) { updated ->
+                        if (updated == true) {
+                            viewModel.load()
+                            savedStateHandle["exercise_updated"] = false
+                        }
+                    }
+            }
+
             ExerciseDetailScreen(
                 viewModel = viewModel,
                 isAdmin = true,
-                onEdit = { navController.navigate("exercise_edit/$id") }
+                onEdit = { navController.navigate("exercise_edit/$id") },
+                onDeleted = {
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set("exercise_deleted", true)
+                    navController.popBackStack()
+                }
             )
         }
 

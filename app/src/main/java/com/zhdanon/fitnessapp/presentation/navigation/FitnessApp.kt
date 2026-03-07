@@ -153,7 +153,9 @@ fun FitnessNavHost(startDestination: String) {
             SecureScreen {
                 ExerciseDetailScreen(
                     viewModel = viewModel,
-                    isAdmin = false
+                    isAdmin = false,
+                    onEdit = {},
+                    onDeleted = {}
                 )
             }
         }

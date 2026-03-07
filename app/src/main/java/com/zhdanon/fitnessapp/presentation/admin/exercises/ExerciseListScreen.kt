@@ -16,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.koin.compose.viewmodel.koinViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -29,7 +28,7 @@ import com.zhdanon.fitnessapp.presentation.background.BackgroundContainer
 fun ExerciseListScreen(
     navController: NavController,
     onAddExercise: () -> Unit,
-    viewModel: ExerciseListViewModel = koinViewModel()
+    viewModel: ExerciseListViewModel
 ) {
     val exercises = viewModel.exercises
     val isLoading = viewModel.isLoading

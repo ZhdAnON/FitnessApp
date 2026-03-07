@@ -8,6 +8,7 @@ import com.zhdanon.fitnessapp.domain.api.ExerciseApi
 import com.zhdanon.fitnessapp.domain.models.workouts.Exercise
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.put
@@ -71,5 +72,16 @@ class ExerciseApiImpl(
         }.body<ExerciseDto>()
 
         return dto.toDomain()
+    }
+
+    override suspend fun deleteExercise(id: String) {
+        client.delete {
+            url {
+                protocol = URLProtocol.HTTP
+                host = apiConfig.HOST
+                port = apiConfig.PORT
+                path("exercises", id)
+            }
+        }
     }
 }

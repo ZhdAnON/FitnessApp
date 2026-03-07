@@ -22,4 +22,10 @@ class ExerciseRepositoryImpl(
 
     override suspend fun updateExercise(id: String, request: ExerciseRequest): Exercise =
         executor.execute { exerciseApi.updateExercise(id, request) }!!
+
+    override suspend fun deleteExercise(id: String) {
+        executor.execute {
+            exerciseApi.deleteExercise(id)
+        }
+    }
 }

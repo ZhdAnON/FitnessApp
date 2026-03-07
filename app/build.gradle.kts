@@ -45,6 +45,7 @@ android {
 dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.runtime)
     coreLibraryDesugaring(libs.desugar.jdk.libs)
     // Kotlin + Coroutines
     implementation(libs.kotlinx.coroutines.core)

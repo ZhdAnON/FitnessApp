@@ -7,11 +7,15 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zhdanon.fitnessapp.domain.models.workouts.Exercise
+import com.zhdanon.fitnessapp.domain.usecases.exercises.DeleteExerciseUseCase
 import com.zhdanon.fitnessapp.domain.usecases.exercises.GetExerciseByIdUseCase
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 class ExerciseDetailViewModel(
     private val exercisesUseCase: GetExerciseByIdUseCase,
+    private val deleteExerciseUseCase: DeleteExerciseUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -21,11 +25,18 @@ class ExerciseDetailViewModel(
 
     private val id = savedStateHandle.get<String>("id")!!
 
+    private val _events = MutableSharedFlow<Event>()
+    val events = _events.asSharedFlow()
+
+    sealed interface Event {
+        data object Deleted : Event
+    }
+
     init {
         load()
     }
 
-    private fun load() {
+    fun load() {
         viewModelScope.launch {
             try {
                 exercise = exercisesUseCase(id)
@@ -33,6 +44,17 @@ class ExerciseDetailViewModel(
             } catch (e: Exception) {
                 error = e.message
                 isLoading = false
+            }
+        }
+    }
+
+    fun delete() {
+        viewModelScope.launch {
+            try {
+                deleteExerciseUseCase(id)
+                _events.emit(Event.Deleted)
+            } catch (e: Exception) {
+                error = e.message
             }
         }
     }

@@ -14,6 +14,9 @@ fun EditExerciseRoute(
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             if (event is EditExerciseViewModel.EditExerciseEvent.Saved) {
+                navController.previousBackStackEntry
+                    ?.savedStateHandle
+                    ?.set("exercise_updated", true)
                 navController.popBackStack()
             }
         }

@@ -83,6 +83,7 @@ val presentationModule = module {
     viewModel { (handle: SavedStateHandle) ->
         ExerciseDetailViewModel(
             exercisesUseCase = get(),
+            deleteExerciseUseCase = get(),
             savedStateHandle = handle
         )
     }
