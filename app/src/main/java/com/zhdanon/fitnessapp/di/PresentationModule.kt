@@ -79,7 +79,12 @@ val presentationModule = module {
         )
     }
     viewModel { ExerciseListViewModel(getExerciseUseCase = get()) }
-    viewModel { AddExerciseViewModel(addExerciseUseCase = get()) }
+    viewModel {
+        AddExerciseViewModel(
+            addExerciseUseCase = get(),
+            uploadExerciseVideoUseCase = get()
+        )
+    }
     viewModel { (handle: SavedStateHandle) ->
         ExerciseDetailViewModel(
             exercisesUseCase = get(),
@@ -91,6 +96,7 @@ val presentationModule = module {
         EditExerciseViewModel(
             getExerciseUseCase = get(),
             updateExerciseUseCase = get(),
+            uploadExerciseVideoUseCase = get(),
             savedStateHandle = SavedStateHandle(mapOf("exerciseId" to exerciseId))
         )
     }

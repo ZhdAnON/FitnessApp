@@ -1,5 +1,6 @@
 package com.zhdanon.fitnessapp.presentation.admin.addexercise
 
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,13 +12,16 @@ import com.zhdanon.fitnessapp.domain.models.workouts.Muscle
 import com.zhdanon.fitnessapp.domain.models.workouts.MuscleCategory
 import com.zhdanon.fitnessapp.domain.usecases.exercises.GetExerciseByIdUseCase
 import com.zhdanon.fitnessapp.domain.usecases.exercises.UpdateExerciseUseCase
+import com.zhdanon.fitnessapp.domain.usecases.exercises.UploadExerciseVideoUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import java.io.File
 
 class EditExerciseViewModel(
     private val getExerciseUseCase: GetExerciseByIdUseCase,
     private val updateExerciseUseCase: UpdateExerciseUseCase,
+    private val uploadExerciseVideoUseCase: UploadExerciseVideoUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -28,6 +32,10 @@ class EditExerciseViewModel(
     var technique by mutableStateOf("")
     var videoUrl by mutableStateOf("")
     var error by mutableStateOf<String?>(null)
+
+    var selectedVideoFile: File? = null
+    var selectedVideoName by mutableStateOf<String?>(null)
+    var selectedVideoUri by mutableStateOf<Uri?>(null)
 
     private val _events = MutableSharedFlow<EditExerciseEvent>()
     val events = _events.asSharedFlow()
@@ -54,6 +62,22 @@ class EditExerciseViewModel(
         }
     }
 
+    fun onVideoSelected(uri: Uri, file: File, name: String) {
+        selectedVideoUri = uri
+        selectedVideoFile = file
+        selectedVideoName = name
+    }
+
+    private suspend fun uploadVideoIfNeeded() {
+        val file = selectedVideoFile ?: return
+        try {
+            val url = uploadExerciseVideoUseCase(exerciseId, file)
+            videoUrl = url
+        } catch (e: Exception) {
+            error = e.message
+        }
+    }
+
     fun save() {
         viewModelScope.launch {
             try {
@@ -66,6 +90,9 @@ class EditExerciseViewModel(
                         videoUrl = videoUrl.ifBlank { null }
                     )
                 )
+
+                uploadVideoIfNeeded()
+
                 _events.emit(EditExerciseEvent.Saved)
             } catch (e: Exception) {
                 error = e.message

@@ -1,5 +1,6 @@
 package com.zhdanon.fitnessapp.presentation.workouts.exerciseDetail
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -141,10 +142,14 @@ fun ExerciseDetailScreen(
                 Text("Техника выполнения:", style = MaterialTheme.typography.titleMedium)
                 Text(exercise.technique)
 
-                exercise.videoUrl?.let {
+                exercise.videoUrl?.let { url ->
                     Spacer(Modifier.height(16.dp))
                     Text("Видео:", style = MaterialTheme.typography.titleMedium)
-                    Text(it, color = MaterialTheme.colorScheme.primary)
+
+                    val uri = remember(url) { Uri.parse(url) }
+
+                    Spacer(Modifier.height(8.dp))
+                    VideoPreview(uri = uri)
                 }
             }
         }

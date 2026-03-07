@@ -5,6 +5,7 @@ import com.zhdanon.fitnessapp.domain.api.ApiCallExecutor
 import com.zhdanon.fitnessapp.domain.api.ExerciseApi
 import com.zhdanon.fitnessapp.domain.models.workouts.Exercise
 import com.zhdanon.fitnessapp.domain.repositories.ExerciseRepository
+import java.io.File
 
 class ExerciseRepositoryImpl(
     private val exerciseApi: ExerciseApi,
@@ -27,5 +28,8 @@ class ExerciseRepositoryImpl(
         executor.execute {
             exerciseApi.deleteExercise(id)
         }
+    }
+    override suspend fun uploadVideo(id: String, file: File): String {
+        return exerciseApi.uploadVideo(id, file)
     }
 }

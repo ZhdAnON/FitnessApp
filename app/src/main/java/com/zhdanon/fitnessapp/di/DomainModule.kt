@@ -23,6 +23,7 @@ import com.zhdanon.fitnessapp.domain.usecases.exercises.DeleteExerciseUseCase
 import com.zhdanon.fitnessapp.domain.usecases.exercises.GetExerciseByIdUseCase
 import com.zhdanon.fitnessapp.domain.usecases.exercises.GetExerciseUseCase
 import com.zhdanon.fitnessapp.domain.usecases.exercises.UpdateExerciseUseCase
+import com.zhdanon.fitnessapp.domain.usecases.exercises.UploadExerciseVideoUseCase
 import com.zhdanon.fitnessapp.domain.usecases.nutrition.CreateNutritionProgramUseCase
 import com.zhdanon.fitnessapp.domain.usecases.nutrition.DeleteNutritionProgramUseCase
 import com.zhdanon.fitnessapp.domain.usecases.nutrition.GetAllNutritionProgramsUseCase
@@ -60,6 +61,7 @@ val domainModule = module {
     factory { GetExerciseUseCase(get()) }
     factory { DeleteExerciseUseCase(get()) }
     factory { UpdateExerciseUseCase(get()) }
+    factory { UploadExerciseVideoUseCase(get()) }
 
     // Nutrition
     factory { CreateNutritionProgramUseCase(get()) }

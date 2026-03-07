@@ -1,3 +1,6 @@
+package com.zhdanon.fitnessapp.presentation.admin.addexercise
+
+import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -6,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,12 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.zhdanon.fitnessapp.domain.models.workouts.Muscle
-import com.zhdanon.fitnessapp.presentation.admin.addexercise.MuscleSelector
+import com.zhdanon.fitnessapp.presentation.workouts.exerciseDetail.VideoPreview
 
 @Composable
 fun ExerciseEditorScreen(
     isEditMode: Boolean,
-    onSaved: () -> Unit,
     name: String,
     onNameChange: (String) -> Unit,
     selectedMuscles: List<Muscle>,
@@ -26,7 +29,9 @@ fun ExerciseEditorScreen(
     technique: String,
     onTechniqueChange: (String) -> Unit,
     videoUrl: String,
-    onVideoUrlChange: (String) -> Unit,
+    selectedVideoName: String?,
+    selectedVideoUri: Uri?,        // ← добавили
+    onPickVideo: () -> Unit,
     onSaveClick: () -> Unit,
     error: String?
 ) {
@@ -60,12 +65,29 @@ fun ExerciseEditorScreen(
 
         Spacer(Modifier.height(12.dp))
 
-        OutlinedTextField(
-            value = videoUrl,
-            onValueChange = onVideoUrlChange,
-            label = { Text("Видео (необязательно)") },
+        Text("Видео", style = MaterialTheme.typography.titleMedium)
+
+        if (videoUrl.isNotBlank()) {
+            Text("Текущее: $videoUrl", color = MaterialTheme.colorScheme.primary)
+            Spacer(Modifier.height(8.dp))
+        }
+
+        Button(
+            onClick = onPickVideo,
             modifier = Modifier.fillMaxWidth()
-        )
+        ) {
+            Text("Выбрать видеофайл")
+        }
+
+        selectedVideoName?.let {
+            Spacer(Modifier.height(8.dp))
+            Text("Выбрано: $it")
+        }
+        selectedVideoUri?.let {
+            Spacer(Modifier.height(12.dp))
+            VideoPreview(uri = it)
+        }
+
 
         Spacer(Modifier.height(24.dp))
 
